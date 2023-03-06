@@ -1,31 +1,101 @@
 """
-My Service
+Shopcart Service
 
-Describe what your service does here
+This microservice handles the lifecycle of Shopcarts
 """
-
-from flask import Flask, jsonify, request, url_for, make_response, abort
+from flask import jsonify, request, url_for, make_response, abort
+from service.models import Shopcart, Item
 from service.common import status  # HTTP Status Codes
-from service.models import YourResourceModel
+from . import app  # Import Flask application
 
-# Import Flask application
-from . import app
 
+# ---------------------------------------------------------------------
+#                S H O P C A R T   M E T H O D S
+# ---------------------------------------------------------------------
 
 ######################################################################
 # GET INDEX
 ######################################################################
 @app.route("/")
 def index():
-    """ Root URL response """
+    """Root URL response"""
     return (
-        "Reminder: return some useful information in json format about the service here",
+        jsonify(
+            name="Shopcart REST API Service",
+            version="1.0",
+            paths=url_for("list_shopcarts", _external=True),
+        ),
         status.HTTP_200_OK,
     )
 
+######################################################################
+# LIST ALL SHOPCARTS
+######################################################################
+@app.route("/shopcarts", methods=["GET"])
+def list_shopcarts():
+    """Returns all of the Shopcarts"""
+    app.logger.info("Request for Shopcart list")
+    shopcarts = []
+
+    # Process the query string if any
+    name = request.args.get("name")
+    if name:
+        shopcarts = Shopcart.find_by_name(name)
+    else:
+        shopcarts = Shopcart.all()
+
+    # Return as an array of dictionaries
+    results = [shopcart.serialize() for shopcart in shopcarts]
+
+    return make_response(jsonify(results), status.HTTP_200_OK)
 
 ######################################################################
-#  R E S T   A P I   E N D P O I N T S
+# CREATE A NEW SHOPCART
+######################################################################
+@app.route("/shopcarts", methods=["POST"])
+def create_shopcarts():
+    """
+    Creates a Shopcart
+    This endpoint will create an Shopcart based the data in the body that is posted
+    """
+    app.logger.info("Request to create an Shopcart")
+    check_content_type("application/json")
+
+    # Create the shopcart
+    shopcart = Shopcart()
+    shopcart.deserialize(request.get_json())
+    shopcart.create()
+
+    # Create a message to return
+    message = shopcart.serialize()
+    location_url = url_for("create_shopcarts", shopcart_id=shopcart.id, _external=True)
+
+    return make_response(
+        jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
+    )
+
+
+
+
+# ---------------------------------------------------------------------
+#                A D D R E S S   M E T H O D S
+# ---------------------------------------------------------------------
+
+
+
+
+
+######################################################################
+#  U T I L I T Y   F U N C T I O N S
 ######################################################################
 
-# Place your REST API code here ...
+def check_content_type(media_type):
+    """Checks that the media type is correct"""
+    content_type = request.headers.get("Content-Type")
+    if content_type and content_type == media_type:
+        return
+    app.logger.error("Invalid Content-Type: %s", content_type)
+    abort(
+        status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+        f"Content-Type must be {media_type}",
+    )
