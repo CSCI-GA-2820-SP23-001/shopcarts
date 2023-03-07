@@ -77,7 +77,7 @@ class TestShopcartService(TestCase):
         return shopcarts
 
     ######################################################################
-    #  P L A C E   T E S T   C A S E S   H E R E
+    #  S H O P C A R T   T E S T   C A S E S   H E R E
     ######################################################################
 
 
@@ -89,6 +89,35 @@ class TestShopcartService(TestCase):
         )
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
+
+
+    ######################################################################
+    #   I T E M   T E S T   C A S E S   H E R E
+    ######################################################################
+
+    def test_add_item(self):
+        """It should Add an item to an shopcart"""
+        shopcart = self._create_shopcarts(1)[0]
+        item = ItemFactory()
+        resp = self.client.post(
+            f"{BASE_URL}/{shopcart.id}/items",
+            json=item.serialize(),
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        data = resp.get_json()
+        logging.debug(data)
+        self.assertEqual(data["shopcart_id"], shopcart.id)
+        self.assertEqual(data["name"], item.name)
+        self.assertEqual(data["quantity"], item.quantity)
+        self.assertEqual(data["color"], item.color)
+        self.assertEqual(data["size"], item.size)
+        self.assertEqual(data["price"], item.price)
+
+
+    ######################################################################
+    #   O T H E R   T E S T   C A S E S 
+    ######################################################################
 
 
     def test_bad_request(self):

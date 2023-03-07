@@ -45,7 +45,7 @@ class TestShopcart(unittest.TestCase):
         db.session.remove()
 
     ######################################################################
-    #  T E S T   C A S E S
+    #  S H O P C A R T    T E S T   C A S E S   H E R E
     ######################################################################
 
     def test_create_an_shopcart(self):
@@ -66,6 +66,10 @@ class TestShopcart(unittest.TestCase):
         self.assertEqual(shopcart.date_joined, fake_shopcart.date_joined)
 
 
+    ######################################################################
+    #  I T E M   T E S T   C A S E S   H E R E
+    ######################################################################
+
     def test_add_a_shopcart(self):
         """It should Create an shopcart and add it to the database"""
         shopcarts = Shopcart.all()
@@ -76,3 +80,32 @@ class TestShopcart(unittest.TestCase):
         self.assertIsNotNone(shopcart.id)
         shopcarts = Shopcart.all()
         self.assertEqual(len(shopcarts), 1)
+
+
+
+
+
+
+    def test_add_shopcart_item(self):
+        """It should Create an shopcart with an item and add it to the database"""
+        shopcarts = Shopcart.all()
+        self.assertEqual(shopcarts, [])
+        shopcart = ShopcartFactory()
+        item = ItemFactory(shopcart=shopcart)
+        shopcart.items.append(item)
+        shopcart.create()
+        # Assert that it was assigned an id and shows up in the database
+        self.assertIsNotNone(shopcart.id)
+        shopcarts = Shopcart.all()
+        self.assertEqual(len(shopcarts), 1)
+
+        new_shopcart = Shopcart.find(shopcart.id)
+        self.assertEqual(new_shopcart.items[0].name, item.name)
+
+        item2 = ItemFactory(shopcart=shopcart)
+        shopcart.items.append(item2)
+        shopcart.update()
+
+        new_shopcart = Shopcart.find(shopcart.id)
+        self.assertEqual(len(new_shopcart.items), 2)
+        self.assertEqual(new_shopcart.items[1].name, item2.name)

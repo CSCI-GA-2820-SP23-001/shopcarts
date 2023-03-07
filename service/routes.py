@@ -76,12 +76,43 @@ def create_shopcarts():
 
 
 
-
 # ---------------------------------------------------------------------
-#                A D D R E S S   M E T H O D S
+#                I T E M   M E T H O D S
 # ---------------------------------------------------------------------
 
+######################################################################
+# ADD AN ADDRESS TO AN ACCOUNT
+######################################################################
+@app.route("/shopcarts/<int:shopcart_id>/items", methods=["POST"])
+def create_items(shopcart_id):
+    """
+    Create an Item on an Shopcart
 
+    This endpoint will add an item to an shopcart
+    """
+    app.logger.info("Request to create an Item for Shopcart with id: %s", shopcart_id)
+    check_content_type("application/json")
+
+    # See if the shopcart exists and abort if it doesn't
+    shopcart = Shopcart.find(shopcart_id)
+    if not shopcart:
+        abort(
+            status.HTTP_404_NOT_FOUND,
+            f"Shopcart with id '{shopcart_id}' could not be found.",
+        )
+
+    # Create an item from the json data
+    item = Item()
+    item.deserialize(request.get_json())
+
+    # Append the item to the shopcart
+    shopcart.items.append(item)
+    shopcart.update()
+
+    # Prepare a message to return
+    message = item.serialize()
+
+    return make_response(jsonify(message), status.HTTP_201_CREATED)
 
 
 
