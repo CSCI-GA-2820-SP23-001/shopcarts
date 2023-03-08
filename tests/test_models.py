@@ -48,7 +48,7 @@ class TestShopcart(unittest.TestCase):
     #  S H O P C A R T    T E S T   C A S E S   H E R E
     ######################################################################
 
-    def test_create_an_shopcart(self):
+    def test_create_a_shopcart(self):
         """It should Create a Shopcart and assert that it exists"""
         fake_shopcart = ShopcartFactory()
         # pylint: disable=unexpected-keyword-arg

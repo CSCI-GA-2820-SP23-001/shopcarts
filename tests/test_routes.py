@@ -88,7 +88,23 @@ class TestShopcartService(TestCase):
             BASE_URL, json=shopcart.serialize(), content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        
+        # Make sure location header is set
+        location = resp.headers.get("Location", None)
+        self.assertIsNotNone(location)
 
+        # Check the data is correct
+        new_shopcart = resp.get_json()
+        self.assertEqual(new_shopcart["name"], shopcart.name, "Names does not match")
+        self.assertEqual(new_shopcart["email"], shopcart.email, "Email does not match")
+        self.assertEqual(
+            new_shopcart["phone_number"], shopcart.phone_number, "Phone does not match"
+        )
+        self.assertEqual(
+            new_shopcart["date_joined"],
+            str(shopcart.date_joined),
+            "Date Joined does not match",
+        )
 
 
     ######################################################################
