@@ -81,7 +81,7 @@ def create_shopcarts():
 # ---------------------------------------------------------------------
 
 ######################################################################
-# ADD AN ADDRESS TO AN ACCOUNT
+# ADD AN ITEM TO A SHOPCART
 ######################################################################
 @app.route("/shopcarts/<int:shopcart_id>/items", methods=["POST"])
 def create_items(shopcart_id):

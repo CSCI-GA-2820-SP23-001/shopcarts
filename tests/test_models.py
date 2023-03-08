@@ -66,6 +66,16 @@ class TestShopcart(unittest.TestCase):
         self.assertEqual(shopcart.date_joined, fake_shopcart.date_joined)
 
 
+    def test_list_all_shopcarts(self):
+        """It should List all Shopcarts in the database"""
+        shopcarts = Shopcart.all()
+        self.assertEqual(shopcarts, [])
+        for shopcart in ShopcartFactory.create_batch(5):
+            shopcart.create()
+        # Assert that there are not 5 accounts in the database
+        shopcarts = Shopcart.all()
+        self.assertEqual(len(shopcarts), 5)
+
     ######################################################################
     #  I T E M   T E S T   C A S E S   H E R E
     ######################################################################
@@ -80,10 +90,6 @@ class TestShopcart(unittest.TestCase):
         self.assertIsNotNone(shopcart.id)
         shopcarts = Shopcart.all()
         self.assertEqual(len(shopcarts), 1)
-
-
-
-
 
 
     def test_add_shopcart_item(self):

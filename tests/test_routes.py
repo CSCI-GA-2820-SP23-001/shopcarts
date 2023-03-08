@@ -107,6 +107,14 @@ class TestShopcartService(TestCase):
         )
 
 
+    def test_get_shopcart_list(self):
+        """It should Get a list of Shopcarts"""
+        self._create_shopcarts(5)
+        resp = self.client.get(BASE_URL)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), 5)
+
     ######################################################################
     #   I T E M   T E S T   C A S E S   H E R E
     ######################################################################
