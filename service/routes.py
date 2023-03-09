@@ -74,7 +74,24 @@ def create_shopcarts():
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
     )
 
+######################################################################
+# DELETE A SHOPCART
+######################################################################
+@app.route("/shopcarts/<int:shopcart_id>", methods=["DELETE"])
+def delete_shopcarts(shopcart_id):
+    """
+    Delete an Shopcart
 
+    This endpoint will delete an Shopcart based the id specified in the path
+    """
+    app.logger.info("Request to delete shopcart with id: %s", shopcart_id)
+
+    # Retrieve the shopcart to delete and delete it if it exists
+    shopcart = Shopcart.find(shopcart_id)
+    if shopcart:
+        shopcart.delete()
+
+    return make_response("", status.HTTP_204_NO_CONTENT)
 
 # ---------------------------------------------------------------------
 #                I T E M   M E T H O D S
