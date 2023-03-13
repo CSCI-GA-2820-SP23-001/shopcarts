@@ -220,3 +220,10 @@ class TestShopcartService(TestCase):
         """It should not allow an illegal method call"""
         resp = self.client.put(BASE_URL, json={"not": "today"})
         self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_delete_shopcart(self):
+        """It should Delete an Shopcart"""
+        # get the id of an shopcart
+        shopcart = self._create_shopcarts(1)[0]
+        resp = self.client.delete(f"{BASE_URL}/{shopcart.id}")
+        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
