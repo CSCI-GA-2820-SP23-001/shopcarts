@@ -72,9 +72,23 @@ class TestShopcart(unittest.TestCase):
         self.assertEqual(shopcarts, [])
         for shopcart in ShopcartFactory.create_batch(5):
             shopcart.create()
-        # Assert that there are not 5 accounts in the database
+        # Assert that there are not 5 shopcarts in the database
         shopcarts = Shopcart.all()
         self.assertEqual(len(shopcarts), 5)
+
+    def test_read_shopcart(self):
+        """It should Read an shopcart"""
+        shopcart = ShopcartFactory()
+        shopcart.create()
+
+        # Read it back
+        found_shopcart = Shopcart.find(shopcart.id)
+        self.assertEqual(found_shopcart.id, shopcart.id)
+        self.assertEqual(found_shopcart.name, shopcart.name)
+        self.assertEqual(found_shopcart.email, shopcart.email)
+        self.assertEqual(found_shopcart.phone_number, shopcart.phone_number)
+        self.assertEqual(found_shopcart.date_joined, shopcart.date_joined)
+        self.assertEqual(found_shopcart.items, [])
 
     ######################################################################
     #  I T E M   T E S T   C A S E S   H E R E
