@@ -165,6 +165,46 @@ class TestShopcartService(TestCase):
         self.assertEqual(len(data), 2)
 
 
+
+def test_update_item(self):
+        """It should Update an item in a shopcart"""
+        # create a known item
+        shopcart = self._create_shopcarts(1)[0]
+        item = itemFactory()
+        resp = self.client.post(
+            f"{BASE_URL}/{shopcart.id}/items",
+            json=item.serialize(),
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        data = resp.get_json()
+        logging.debug(data)
+        item_id = data["id"]
+        data["name"] = "XXXX"
+
+        # send the update back
+        resp = self.client.put(
+            f"{BASE_URL}/{shopcart.id}/items/{item_id}",
+            json=data,
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+
+        # retrieve it back
+        resp = self.client.get(
+            f"{BASE_URL}/{shopcart.id}/items/{item_id}",
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+
+        data = resp.get_json()
+        logging.debug(data)
+        self.assertEqual(data["id"], item_id)
+        self.assertEqual(data["shopcart_id"], shopcart.id)
+        self.assertEqual(data["name"], "XXXX")
+
+
     ######################################################################
     #   O T H E R   T E S T   C A S E S 
     ######################################################################
