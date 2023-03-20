@@ -75,7 +75,7 @@ def create_shopcarts():
     )
 
 ######################################################################
-# RETRIEVE AN ACCOUNT
+# RETRIEVE A SHOPCART
 ######################################################################
 @app.route("/shopcarts/<int:shopcart_id>", methods=["GET"])
 def get_shopcarts(shopcart_id):
@@ -115,6 +115,36 @@ def delete_shopcarts(shopcart_id):
 
     return make_response("", status.HTTP_204_NO_CONTENT)
 
+
+######################################################################
+# UPDATE AN EXISTING SHOPCART
+######################################################################
+@app.route("/shopcarts/<int:shopcart_id>", methods=["PUT"])
+def update_shopcarts(shopcart_id):
+    """
+    Update an Shopcart
+
+    This endpoint will update a Shopcart based the body that is posted
+    """
+    app.logger.info("Request to update shopcart with id: %s", shopcart_id)
+    check_content_type("application/json")
+
+    # See if the shopcart exists and abort if it doesn't
+    shopcart = Shopcart.find(shopcart_id)
+    if not shopcart:
+        abort(
+            status.HTTP_404_NOT_FOUND, f"Shopcart with id '{shopcart_id}' was not found."
+        )
+
+    # Update from the json in the body of the request
+    shopcart.deserialize(request.get_json())
+    shopcart.id = shopcart_id
+    shopcart.update()
+
+    return make_response(jsonify(shopcart.serialize()), status.HTTP_200_OK)
+
+
+
 # ---------------------------------------------------------------------
 #                I T E M   M E T H O D S
 # ---------------------------------------------------------------------
@@ -153,6 +183,30 @@ def create_items(shopcart_id):
 
     return make_response(jsonify(message), status.HTTP_201_CREATED)
 
+######################################################################
+# RETRIEVE AN ITEM FROM A SHOPCART
+######################################################################
+@app.route("/shopcarts/<int:shopcart_id>/items/<int:item_id>", methods=["GET"])
+def get_items(shopcart_id, item_id):
+    """
+    Get a Shopcart
+
+    This endpoint returns just an item
+    """
+    app.logger.info(
+        "Request to retrieve Item %s for Shopcart id: %s", (item_id, shopcart_id)
+    )
+
+    # See if the item exists and abort if it doesn't
+    item = Item.find(item_id)
+    if not item:
+        abort(
+            status.HTTP_404_NOT_FOUND,
+            f"Shopcart with id '{item_id}' could not be found.",
+        )
+
+    return make_response(jsonify(item.serialize()), status.HTTP_200_OK)
+
 
 ######################################################################
 # LIST ITEMS
@@ -175,21 +229,6 @@ def list_items(shopcart_id):
 
     return make_response(jsonify(results), status.HTTP_200_OK)
 
-
-######################################################################
-#  U T I L I T Y   F U N C T I O N S
-######################################################################
-
-def check_content_type(media_type):
-    """Checks that the media type is correct"""
-    content_type = request.headers.get("Content-Type")
-    if content_type and content_type == media_type:
-        return
-    app.logger.error("Invalid Content-Type: %s", content_type)
-    abort(
-        status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
-        f"Content-Type must be {media_type}",
-    )
 
 ######################################################################
     # UPDATE AN ITEM
@@ -219,3 +258,21 @@ def update_items(shopcart_id, item_id):
     item.update()
 
     return make_response(jsonify(item.serialize()), status.HTTP_200_OK)
+
+
+
+######################################################################
+#  U T I L I T Y   F U N C T I O N S
+######################################################################
+
+def check_content_type(media_type):
+    """Checks that the media type is correct"""
+    content_type = request.headers.get("Content-Type")
+    if content_type and content_type == media_type:
+        return
+    app.logger.error("Invalid Content-Type: %s", content_type)
+    abort(
+        status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+        f"Content-Type must be {media_type}",
+    )
+

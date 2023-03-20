@@ -89,6 +89,104 @@ class TestShopcart(unittest.TestCase):
         self.assertEqual(found_shopcart.phone_number, shopcart.phone_number)
         self.assertEqual(found_shopcart.date_joined, shopcart.date_joined)
         self.assertEqual(found_shopcart.items, [])
+    
+    def test_update_shopcart(self):
+        """It should Update a shopcart"""
+        shopcart = ShopcartFactory(email="advent@change.me")
+        shopcart.create()
+        # Assert that it was assigned an id and shows up in the database
+        self.assertIsNotNone(shopcart.id)
+        self.assertEqual(shopcart.email, "advent@change.me")
+
+        # Fetch it back
+        shopcart = Shopcart.find(shopcart.id)
+        shopcart.email = "XYZZY@plugh.com"
+        shopcart.update()
+
+        # Fetch it back again
+        shopcart = Shopcart.find(shopcart.id)
+        self.assertEqual(shopcart.email, "XYZZY@plugh.com")
+
+    def test_delete_a_shopcart(self):
+        """It should Delete a shopcart from the database"""
+        shopcarts = Shopcart.all()
+        self.assertEqual(shopcarts, [])
+        shopcart = ShopcartFactory()
+        shopcart.create()
+        # Assert that it was assigned an id and shows up in the database
+        self.assertIsNotNone(shopcart.id)
+        shopcarts = Shopcart.all()
+        self.assertEqual(len(shopcarts), 1)
+        shopcart = shopcarts[0]
+        shopcart.delete()
+        shopcarts = Shopcart.all()
+        self.assertEqual(len(shopcarts), 0)
+
+
+    def test_find_by_name(self):
+        """It should Find an Shopcart by name"""
+        shopcart = ShopcartFactory()
+        shopcart.create()
+
+        # Fetch it back by name
+        same_shopcart = Shopcart.find_by_name(shopcart.name)[0]
+        self.assertEqual(same_shopcart.id, shopcart.id)
+        self.assertEqual(same_shopcart.name, shopcart.name)
+
+    def test_serialize_a_shopcart(self):
+        """It should Serialize a shopcart"""
+        shopcart = ShopcartFactory()
+        item = ItemFactory()
+        shopcart.items.append(item)
+        serial_shopcart = shopcart.serialize()
+        self.assertEqual(serial_shopcart["id"], shopcart.id)
+        self.assertEqual(serial_shopcart["name"], shopcart.name)
+        self.assertEqual(serial_shopcart["email"], shopcart.email)
+        self.assertEqual(serial_shopcart["phone_number"], shopcart.phone_number)
+        self.assertEqual(serial_shopcart["date_joined"], str(shopcart.date_joined))
+        self.assertEqual(len(serial_shopcart["items"]), 1)
+        items = serial_shopcart["items"]
+        self.assertEqual(items[0]["id"], item.id)
+        self.assertEqual(items[0]["name"], item.name)
+        self.assertEqual(items[0]["quantity"], item.quantity)
+        self.assertEqual(items[0]["color"], item.color)
+        self.assertEqual(items[0]["size"], item.size)
+        self.assertEqual(items[0]["price"], item.price)
+
+    def test_deserialize_a_shopcart(self):
+        """It should Deserialize an shopcart"""
+        shopcart = ShopcartFactory()
+        shopcart.items.append(ItemFactory())
+        shopcart.create()
+        serial_shopcart = shopcart.serialize()
+        new_shopcart = Shopcart()
+        new_shopcart.deserialize(serial_shopcart)
+        self.assertEqual(new_shopcart.name, shopcart.name)
+        self.assertEqual(new_shopcart.email, shopcart.email)
+        self.assertEqual(new_shopcart.phone_number, shopcart.phone_number)
+        self.assertEqual(new_shopcart.date_joined, shopcart.date_joined)
+
+    def test_deserialize_with_key_error(self):
+        """It should not Deserialize a shopcart with a KeyError"""
+        shopcart = Shopcart()
+        self.assertRaises(DataValidationError, shopcart.deserialize, {})
+
+    def test_deserialize_with_type_error(self):
+        """It should not Deserialize a shopcart with a TypeError"""
+        shopcart = Shopcart()
+        self.assertRaises(DataValidationError, shopcart.deserialize, [])
+
+    def test_deserialize_item_key_error(self):
+        """It should not Deserialize a item with a KeyError"""
+        item = Item()
+        self.assertRaises(DataValidationError, item.deserialize, {})
+
+    def test_deserialize_item_type_error(self):
+        """It should not Deserialize a item with a TypeError"""
+        item = Item()
+        self.assertRaises(DataValidationError, item.deserialize, [])
+
+
 
     ######################################################################
     #  I T E M   T E S T   C A S E S   H E R E
@@ -129,3 +227,54 @@ class TestShopcart(unittest.TestCase):
         new_shopcart = Shopcart.find(shopcart.id)
         self.assertEqual(len(new_shopcart.items), 2)
         self.assertEqual(new_shopcart.items[1].name, item2.name)
+
+
+    def test_update_shopcart_item(self):
+        """It should Update a shopcart's item"""
+        shopcarts = Shopcart.all()
+        self.assertEqual(shopcarts, [])
+
+        shopcart = ShopcartFactory()
+        item = ItemFactory(shopcart=shopcart)
+        shopcart.create()
+        # Assert that it was assigned an id and shows up in the database
+        self.assertIsNotNone(shopcart.id)
+        shopcarts = Shopcart.all()
+        self.assertEqual(len(shopcarts), 1)
+
+        # Fetch it back
+        shopcart = Shopcart.find(shopcart.id)
+        old_item = shopcart.items[0]
+        print("%r", old_item)
+        self.assertEqual(old_item.color, item.color)
+        # Change the color
+        old_item.color = "XX"
+        shopcart.update()
+
+        # Fetch it back again
+        shopcart = Shopcart.find(shopcart.id)
+        item = shopcart.items[0]
+        self.assertEqual(item.color, "XX")
+
+    def test_delete_shopcart_item(self):
+        """It should Delete an shopcarts item"""
+        shopcarts = Shopcart.all()
+        self.assertEqual(shopcarts, [])
+
+        shopcart = ShopcartFactory()
+        item = ItemFactory(shopcart=shopcart)
+        shopcart.create()
+        # Assert that it was assigned an id and shows up in the database
+        self.assertIsNotNone(shopcart.id)
+        shopcarts = Shopcart.all()
+        self.assertEqual(len(shopcarts), 1)
+
+        # Fetch it back
+        shopcart = Shopcart.find(shopcart.id)
+        item = shopcart.items[0]
+        item.delete()
+        shopcart.update()
+
+        # Fetch it back again
+        shopcart = Shopcart.find(shopcart.id)
+        self.assertEqual(len(shopcart.items), 0)
