@@ -115,6 +115,39 @@ class TestShopcartService(TestCase):
         data = resp.get_json()
         self.assertEqual(len(data), 5)
 
+    def test_get_shopcart_list(self):
+        """It should Get a list of Shopcarts"""
+        self._create_shopcarts(5)
+        resp = self.client.get(BASE_URL)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), 5)
+
+    def test_get_shopcart_by_name(self):
+        """It should Get an Shopcart by Name"""
+        shopcarts = self._create_shopcarts(3)
+        resp = self.client.get(BASE_URL, query_string=f"name={shopcarts[1].name}")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(data[0]["name"], shopcarts[1].name)
+
+    def test_get_shopcart(self):
+        """It should Read a single Shopcart"""
+        # get the id of an shopcart
+        shopcart = self._create_shopcarts(1)[0]
+        resp = self.client.get(
+            f"{BASE_URL}/{shopcart.id}", content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(data["name"], shopcart.name)
+
+    def test_get_shopcart_not_found(self):
+        """It should not Read an Shopcart that is not found"""
+        resp = self.client.get(f"{BASE_URL}/0")
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
+
     ######################################################################
     #   I T E M   T E S T   C A S E S   H E R E
     ######################################################################
