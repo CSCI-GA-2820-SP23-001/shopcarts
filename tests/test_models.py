@@ -14,10 +14,10 @@ DATABASE_URI = os.getenv(
 )
 
 
-
 ######################################################################
 #  S H O P C A R T   M O D E L   T E S T   C A S E S
 ######################################################################
+
 class TestShopcart(unittest.TestCase):
     """Test Cases for Shopcart Model"""
 
@@ -65,7 +65,6 @@ class TestShopcart(unittest.TestCase):
         self.assertEqual(shopcart.phone_number, fake_shopcart.phone_number)
         self.assertEqual(shopcart.date_joined, fake_shopcart.date_joined)
 
-
     def test_list_all_shopcarts(self):
         """It should List all Shopcarts in the database"""
         shopcarts = Shopcart.all()
@@ -89,7 +88,7 @@ class TestShopcart(unittest.TestCase):
         self.assertEqual(found_shopcart.phone_number, shopcart.phone_number)
         self.assertEqual(found_shopcart.date_joined, shopcart.date_joined)
         self.assertEqual(found_shopcart.items, [])
-    
+
     def test_update_shopcart(self):
         """It should Update a shopcart"""
         shopcart = ShopcartFactory(email="advent@change.me")
@@ -121,7 +120,6 @@ class TestShopcart(unittest.TestCase):
         shopcart.delete()
         shopcarts = Shopcart.all()
         self.assertEqual(len(shopcarts), 0)
-
 
     def test_find_by_name(self):
         """It should Find an Shopcart by name"""
@@ -186,13 +184,12 @@ class TestShopcart(unittest.TestCase):
         item = Item()
         self.assertRaises(DataValidationError, item.deserialize, [])
 
-
-
     ######################################################################
     #  I T E M   T E S T   C A S E S   H E R E
     ######################################################################
 
     def test_add_a_shopcart(self):
+
         """It should Create an shopcart and add it to the database"""
         shopcarts = Shopcart.all()
         self.assertEqual(shopcarts, [])
@@ -203,8 +200,8 @@ class TestShopcart(unittest.TestCase):
         shopcarts = Shopcart.all()
         self.assertEqual(len(shopcarts), 1)
 
-
     def test_add_shopcart_item(self):
+    
         """It should Create an shopcart with an item and add it to the database"""
         shopcarts = Shopcart.all()
         self.assertEqual(shopcarts, [])
@@ -227,7 +224,6 @@ class TestShopcart(unittest.TestCase):
         new_shopcart = Shopcart.find(shopcart.id)
         self.assertEqual(len(new_shopcart.items), 2)
         self.assertEqual(new_shopcart.items[1].name, item2.name)
-
 
     def test_update_shopcart_item(self):
         """It should Update a shopcart's item"""

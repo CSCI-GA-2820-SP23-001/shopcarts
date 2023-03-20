@@ -13,6 +13,7 @@ logger = logging.getLogger("flask.app")
 # Create the SQLAlchemy object to be initialized later in init_db()
 db = SQLAlchemy()
 
+
 class DataValidationError(Exception):
     """Used for an data validation errors when deserializing"""
 
@@ -25,6 +26,8 @@ def init_db(app):
 ######################################################################
 #  P E R S I S T E N T   B A S E   M O D E L
 ######################################################################
+
+
 class PersistentBase:
     """Base class added persistent methods"""
 
@@ -86,6 +89,8 @@ class PersistentBase:
 ######################################################################
 #  I T E M   M O D E L
 ######################################################################
+
+
 class Item(db.Model, PersistentBase):
     """
     Class that represents an Item
@@ -142,11 +147,11 @@ class Item(db.Model, PersistentBase):
         return self
 
 
-
-
 ######################################################################
 #  S H O P C A R T   M O D E L
 ######################################################################
+
+
 class Shopcart(db.Model, PersistentBase):
     """
     Class that represents a Shopcart
@@ -206,7 +211,6 @@ class Shopcart(db.Model, PersistentBase):
             ) from error
         return self
 
-
     @classmethod
     def find_by_name(cls, name):
         """Returns all Shopcarts with the given name
@@ -216,4 +220,3 @@ class Shopcart(db.Model, PersistentBase):
         """
         logger.info("Processing name query for %s ...", name)
         return cls.query.filter(cls.name == name)
-    

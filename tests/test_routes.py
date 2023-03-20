@@ -22,12 +22,11 @@ DATABASE_URI = os.getenv(
 
 BASE_URL = "/shopcarts"
 
-
-
-
 ######################################################################
 #  T E S T   C A S E S
 ######################################################################
+
+
 class TestShopcartService(TestCase):
     """Shopcart Service Tests"""
 
@@ -55,7 +54,6 @@ class TestShopcartService(TestCase):
         """Runs once after each test case"""
         db.session.remove()
 
-
     ######################################################################
     #  H E L P E R   M E T H O D S
     ######################################################################
@@ -80,7 +78,6 @@ class TestShopcartService(TestCase):
     #  S H O P C A R T   T E S T   C A S E S   H E R E
     ######################################################################
 
-
     def test_create_shopcart(self):
         """It should Create a new Shopcart"""
         shopcart = ShopcartFactory()
@@ -88,7 +85,7 @@ class TestShopcartService(TestCase):
             BASE_URL, json=shopcart.serialize(), content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
-        
+
         # Make sure location header is set
         location = resp.headers.get("Location", None)
         self.assertIsNotNone(location)
@@ -105,7 +102,6 @@ class TestShopcartService(TestCase):
             str(shopcart.date_joined),
             "Date Joined does not match",
         )
-
 
     def test_get_shopcart_list(self):
         """It should Get a list of Shopcarts"""
@@ -139,7 +135,6 @@ class TestShopcartService(TestCase):
         resp = self.client.get(f"{BASE_URL}/0")
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
-
     def test_update_shopcart(self):
         """It should Update an existing Shopcart"""
         # create an Shopcart to update
@@ -163,10 +158,10 @@ class TestShopcartService(TestCase):
         resp = self.client.delete(f"{BASE_URL}/{shopcart.id}")
         self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
 
-
     ######################################################################
     #   I T E M   T E S T   C A S E S   H E R E
     ######################################################################
+
     def test_index(self):
         """It should call the Home Page"""
         resp = self.client.get("/")
@@ -248,8 +243,6 @@ class TestShopcartService(TestCase):
         data = resp.get_json()
         self.assertEqual(len(data), 2)
 
-
-
     def test_update_item(self):
         """It should Update an item in a shopcart"""
         # create a known item
@@ -288,8 +281,6 @@ class TestShopcartService(TestCase):
         self.assertEqual(data["shopcart_id"], shopcart.id)
         self.assertEqual(data["name"], "XXXX")
 
-#test 
-
     def test_delete_item(self):
         """It should Delete an Item"""
         shopcart = self._create_shopcarts(1)[0]
@@ -319,9 +310,8 @@ class TestShopcartService(TestCase):
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
     ######################################################################
-    #   O T H E R   T E S T   C A S E S 
+    #   O T H E R   T E S T   C A S E S
     ######################################################################
-
 
     def test_bad_request(self):
         """It should not Create when sending the wrong data"""
@@ -340,5 +330,3 @@ class TestShopcartService(TestCase):
         """It should not allow an illegal method call"""
         resp = self.client.put(BASE_URL, json={"not": "today"})
         self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-
-
