@@ -166,11 +166,11 @@ class TestShopcartService(TestCase):
 
 
 
-def test_update_item(self):
+    def test_update_item(self):
         """It should Update an item in a shopcart"""
         # create a known item
         shopcart = self._create_shopcarts(1)[0]
-        item = itemFactory()
+        item = ItemFactory()
         resp = self.client.post(
             f"{BASE_URL}/{shopcart.id}/items",
             json=item.serialize(),
@@ -203,6 +203,7 @@ def test_update_item(self):
         self.assertEqual(data["id"], item_id)
         self.assertEqual(data["shopcart_id"], shopcart.id)
         self.assertEqual(data["name"], "XXXX")
+
 
 
     ######################################################################
