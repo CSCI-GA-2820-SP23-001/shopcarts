@@ -22,10 +22,6 @@ def init_db(app):
     """ Initializes the SQLAlchemy app """
     Shopcart.init_db(app)
 
-
-class DataValidationError(Exception):
-    """ Used for an data validation errors when deserializing """
-
 ######################################################################
 #  P E R S I S T E N T   B A S E   M O D E L
 ######################################################################
@@ -198,7 +194,7 @@ class Shopcart(db.Model, PersistentBase):
             # handle inner list of items
             item_list = data.get("items")
             for json_item in item_list:
-                item = Items()
+                item = Item()
                 item.deserialize(json_item)
                 self.items.append(item)
         except KeyError as error:
