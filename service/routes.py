@@ -31,6 +31,8 @@ def index():
 ######################################################################
 # LIST ALL SHOPCARTS
 ######################################################################
+
+
 @app.route("/shopcarts", methods=["GET"])
 def list_shopcarts():
     """Returns all of the Shopcarts"""
@@ -52,6 +54,8 @@ def list_shopcarts():
 ######################################################################
 # CREATE A NEW SHOPCART
 ######################################################################
+
+
 @app.route("/shopcarts", methods=["POST"])
 def create_shopcarts():
     """
@@ -77,6 +81,8 @@ def create_shopcarts():
 ######################################################################
 # RETRIEVE A SHOPCART
 ######################################################################
+
+
 @app.route("/shopcarts/<int:shopcart_id>", methods=["GET"])
 def get_shopcarts(shopcart_id):
     """
@@ -95,6 +101,7 @@ def get_shopcarts(shopcart_id):
         )
 
     return make_response(jsonify(shopcart.serialize()), status.HTTP_200_OK)
+
 
 ######################################################################
 # DELETE A SHOPCART
@@ -144,7 +151,6 @@ def update_shopcarts(shopcart_id):
     return make_response(jsonify(shopcart.serialize()), status.HTTP_200_OK)
 
 
-
 # ---------------------------------------------------------------------
 #                I T E M   M E T H O D S
 # ---------------------------------------------------------------------
@@ -186,6 +192,8 @@ def create_items(shopcart_id):
 ######################################################################
 # RETRIEVE AN ITEM FROM A SHOPCART
 ######################################################################
+
+
 @app.route("/shopcarts/<int:shopcart_id>/items/<int:item_id>", methods=["GET"])
 def get_items(shopcart_id, item_id):
     """
@@ -296,4 +304,3 @@ def check_content_type(media_type):
         status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
         f"Content-Type must be {media_type}",
     )
-
