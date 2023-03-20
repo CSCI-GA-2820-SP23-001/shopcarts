@@ -115,14 +115,6 @@ class TestShopcartService(TestCase):
         data = resp.get_json()
         self.assertEqual(len(data), 5)
 
-    def test_get_shopcart_list(self):
-        """It should Get a list of Shopcarts"""
-        self._create_shopcarts(5)
-        resp = self.client.get(BASE_URL)
-        self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        data = resp.get_json()
-        self.assertEqual(len(data), 5)
-
     def test_get_shopcart_by_name(self):
         """It should Get an Shopcart by Name"""
         shopcarts = self._create_shopcarts(3)
@@ -148,9 +140,37 @@ class TestShopcartService(TestCase):
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
 
+    def test_update_shopcart(self):
+        """It should Update an existing Shopcart"""
+        # create an Shopcart to update
+        test_shopcart = ShopcartFactory()
+        resp = self.client.post(BASE_URL, json=test_shopcart.serialize())
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        # update the shopcart
+        new_shopcart = resp.get_json()
+        new_shopcart["name"] = "Happy-Happy Joy-Joy"
+        new_shopcart_id = new_shopcart["id"]
+        resp = self.client.put(f"{BASE_URL}/{new_shopcart_id}", json=new_shopcart)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        updated_shopcart = resp.get_json()
+        self.assertEqual(updated_shopcart["name"], "Happy-Happy Joy-Joy")
+
+    def test_delete_shopcart(self):
+        """It should Delete an Shopcart"""
+        # get the id of an shopcart
+        shopcart = self._create_shopcarts(1)[0]
+        resp = self.client.delete(f"{BASE_URL}/{shopcart.id}")
+        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+
+
     ######################################################################
     #   I T E M   T E S T   C A S E S   H E R E
     ######################################################################
+    def test_index(self):
+        """It should call the Home Page"""
+        resp = self.client.get("/")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
 
     def test_add_item(self):
         """It should Add an item to an shopcart"""
@@ -171,6 +191,37 @@ class TestShopcartService(TestCase):
         self.assertEqual(data["size"], item.size)
         self.assertEqual(data["price"], item.price)
 
+    def test_get_item(self):
+        """It should Get an item from an shopcart"""
+        # create a known item
+        shopcart = self._create_shopcarts(1)[0]
+        item = ItemFactory()
+        resp = self.client.post(
+            f"{BASE_URL}/{shopcart.id}/items",
+            json=item.serialize(),
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        data = resp.get_json()
+        logging.debug(data)
+        item_id = data["id"]
+
+        # retrieve it back
+        resp = self.client.get(
+            f"{BASE_URL}/{shopcart.id}/items/{item_id}",
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+
+        data = resp.get_json()
+        logging.debug(data)
+        self.assertEqual(data["shopcart_id"], shopcart.id)
+        self.assertEqual(data["name"], item.name)
+        self.assertEqual(data["quantity"], item.quantity)
+        self.assertEqual(data["color"], item.color)
+        self.assertEqual(data["size"], item.size)
+        self.assertEqual(data["price"], item.price)
 
     def test_get_item_list(self):
         """It should Get a list of Items"""
@@ -262,9 +313,4 @@ class TestShopcartService(TestCase):
         resp = self.client.put(BASE_URL, json={"not": "today"})
         self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    def test_delete_shopcart(self):
-        """It should Delete an Shopcart"""
-        # get the id of an shopcart
-        shopcart = self._create_shopcarts(1)[0]
-        resp = self.client.delete(f"{BASE_URL}/{shopcart.id}")
-        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+
