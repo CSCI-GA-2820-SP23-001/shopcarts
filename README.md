@@ -27,4 +27,4 @@ update_items  PUT      /shopcarts/<shopcart_id>/items/<item_id>
 delete_items  DELETE   /shopcarts/<shopcart_id>/items/<item_id>
 ```
 
-The test cases have 95% test coverage and can be run with `nosetests`
+The test cases have 95% test coverage and can be run with `nosetests`.
