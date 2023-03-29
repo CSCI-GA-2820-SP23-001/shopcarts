@@ -9,8 +9,6 @@ from flask import jsonify, request, url_for, make_response, abort
 from service.models import Shopcart, Item
 from service.common import status  # HTTP Status Codes
 
-
-
 ######################################################################
 # S H O P C A R T   M E T H O D S
 ######################################################################
@@ -21,7 +19,7 @@ from service.common import status  # HTTP Status Codes
 ######################################################################
 @app.route("/")
 def index():
-    """Root URL response"""
+  """Root URL response"""
     return (
         jsonify(
             name="Shopcart REST API Service",
