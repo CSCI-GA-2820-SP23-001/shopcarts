@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python](https://img.shields.io/badge/Language-Python-blue.svg)](https://python.org/)
 [![Build Status](https://github.com/CSCI-GA-2820-SP23-001/shopcarts/actions/workflows/tdd.yml/badge.svg)](https://github.com/CSCI-GA-2820-SP23-001/shopcarts/actions)
-[![codecov](https://codecov.io/gh/CSCI-GA-2820-SP23-001/shopcarts/branch/master/graph/badge.svg?token=73d49566)](https://codecov.io/gh/CSCI-GA-2820-SP23-001/shopcarts)
+[![codecov](https://codecov.io/gh/CSCI-GA-2820-SP23-001/shopcarts/branch/ctn8176-codecov-button/graph/badge.svg?token=451S6FLDI3)](https://codecov.io/gh/CSCI-GA-2820-SP23-001/shopcarts)
 
 This repository contains  code for the Customer shopcart for an e-commerce web site. This shows how to create a REST API with subordinate resources like shopcarts that have items:
 
