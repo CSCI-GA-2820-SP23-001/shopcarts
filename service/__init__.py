@@ -8,7 +8,7 @@ import sys
 from flask import Flask
 # pylint: disable=cyclic-import
 from service import config
-from service.common import constants, log_handlers, strings
+from service.common import log_handlers
 
 # Create Flask application
 app = Flask(__name__)
