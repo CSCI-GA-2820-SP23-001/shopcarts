@@ -6,8 +6,9 @@ and SQL database
 """
 import sys
 from flask import Flask
+# pylint: disable=cyclic-import
 from service import config
-from service.common import log_handlers
+from service.common import constants, log_handlers, strings
 
 # Create Flask application
 app = Flask(__name__)
