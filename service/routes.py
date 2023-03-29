@@ -1,7 +1,12 @@
-"""Shopcart Service: This microservice handles the lifecycle of Shopcarts"""
-from flask import jsonify, request, url_for, make_response, abort
+"""
+Shopcart Service
+
+This microservice handles the lifecycle of Shopcarts
+"""
+from flask import jsonify, request, url_for, abort
 from service.models import Shopcart, Item
-from service.common import status  # HTTP Status Codes
+from service.common import constants, status, strings # HTTP Status Codes
+
 from . import app  # Import Flask application
 
 
