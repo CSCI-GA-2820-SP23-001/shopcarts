@@ -3,11 +3,12 @@ Shopcart Service
 
 This microservice handles the lifecycle of Shopcarts
 """
-from flask import Flask, jsonify, request, url_for, make_response, abort
+from . import app  # Import Flask application
+
+from flask import jsonify, request, url_for, make_response, abort
 from service.models import Shopcart, Item
 from service.common import status  # HTTP Status Codes
 
-from . import app  # Import Flask application
 
 
 # ---------------------------------------------------------------------
