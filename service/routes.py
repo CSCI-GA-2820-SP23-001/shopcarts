@@ -20,7 +20,7 @@ from service.common import status  # HTTP Status Codes
 @app.route("/")
 def index():
   """Returns all of the Shopcarts"""
-    return(
+   return(
       jsonify(
         name="Shopcart REST API Service",
         version="1.0",
