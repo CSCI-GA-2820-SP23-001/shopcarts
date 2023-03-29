@@ -13,7 +13,6 @@ from service.common import log_handlers
 app = Flask(__name__)
 app.config.from_object(config)
 
-from service.routes import *
 
 # Dependencies require we import the routes AFTER the Flask app is created
 # pylint: disable=wrong-import-position, wrong-import-order
