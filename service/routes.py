@@ -6,7 +6,7 @@ This microservice handles the lifecycle of Shopcarts
 from flask import jsonify, request, url_for, make_response, abort
 from service.models import Shopcart, Item
 from service.common import status  # HTTP Status Codes
-from service import app  # Import Flask application
+# from service import app  # Import Flask application
 
 ######################################################################
 # S H O P C A R T   M E T H O D S
@@ -301,3 +301,6 @@ def check_content_type(media_type):
         status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
         f"Content-Type must be {media_type}",
     )
+
+
+from service import app  # Import Flask application
