@@ -6,8 +6,7 @@ This microservice handles the lifecycle of Shopcarts
 from flask import jsonify, request, url_for, make_response, abort
 from service.models import Shopcart, Item
 from service.common import status  # HTTP Status Codes
-
-# from . import app  # Import Flask application
+from . import app  # Import Flask application
 
 ######################################################################
 # S H O P C A R T   M E T H O D S
