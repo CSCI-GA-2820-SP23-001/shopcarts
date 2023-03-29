@@ -6,27 +6,24 @@ This microservice handles the lifecycle of Shopcarts
 from flask import jsonify, request, url_for, make_response, abort
 from service.models import Shopcart, Item
 from service.common import status  # HTTP Status Codes
-from . import app  # Import Flask application
+from service import app  # Import Flask application
 
+######################################################################
+# S H O P C A R T   M E T H O D S
+######################################################################
 
-# ---------------------------------------------------------------------
-#                S H O P C A R T   M E T H O D S
-# ---------------------------------------------------------------------
 
 ######################################################################
 # GET INDEX
 ######################################################################
 @app.route("/")
 def index():
-    """Root URL response"""
-    return (
-        jsonify(
-            name="Shopcart REST API Service",
-            version="1.0",
-            paths=url_for("list_shopcarts", _external=True),
-        ),
-        status.HTTP_200_OK,
-    )
+    """Returns all of the Shopcarts"""
+    return jsonify(
+        name="Shopcart REST API Service",
+        version="1.0",
+        paths=url_for("list_shopcarts", _external=True),
+    ), status.HTTP_200_OK
 
 ######################################################################
 # LIST ALL SHOPCARTS
@@ -151,9 +148,9 @@ def update_shopcarts(shopcart_id):
     return make_response(jsonify(shopcart.serialize()), status.HTTP_200_OK)
 
 
-# ---------------------------------------------------------------------
-#                I T E M   M E T H O D S
-# ---------------------------------------------------------------------
+######################################################################
+# I T E M   M E T H O D S
+######################################################################
 
 ######################################################################
 # ADD AN ITEM TO A SHOPCART
@@ -239,7 +236,7 @@ def list_items(shopcart_id):
 
 
 ######################################################################
-    # UPDATE AN ITEM
+# UPDATE AN ITEM
 ######################################################################
 @app.route("/shopcarts/<int:shopcart_id>/items/<int:item_id>", methods=["PUT"])
 def update_items(shopcart_id, item_id):
@@ -291,7 +288,7 @@ def delete_items(shopcart_id, item_id):
 
 
 ######################################################################
-#  U T I L I T Y   F U N C T I O N S
+# U T I L I T Y   F U N C T I O N S
 ######################################################################
 
 def check_content_type(media_type):

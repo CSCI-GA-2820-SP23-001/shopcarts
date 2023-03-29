@@ -201,7 +201,7 @@ class TestShopcart(unittest.TestCase):
         self.assertEqual(len(shopcarts), 1)
 
     def test_add_shopcart_item(self):
-    
+
         """It should Create an shopcart with an item and add it to the database"""
         shopcarts = Shopcart.all()
         self.assertEqual(shopcarts, [])
