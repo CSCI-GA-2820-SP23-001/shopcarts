@@ -122,7 +122,7 @@ class TestShopcart(unittest.TestCase):
         self.assertEqual(len(shopcarts), 0)
 
     def test_find_by_name(self):
-        """It should Find an Shopcart by name"""
+        """It should find a Shopcart by name"""
         shopcart = ShopcartFactory()
         shopcart.create()
 
@@ -130,6 +130,16 @@ class TestShopcart(unittest.TestCase):
         same_shopcart = Shopcart.find_by_name(shopcart.name)[0]
         self.assertEqual(same_shopcart.id, shopcart.id)
         self.assertEqual(same_shopcart.name, shopcart.name)
+
+    def test_find_by_email(self):
+        """It should find a Shopcart by email"""
+        shopcart = ShopcartFactory()
+        shopcart.create()
+
+        # Fetch it back by email
+        same_shopcart = Shopcart.find_by_email(shopcart.email)[0]
+        self.assertEqual(same_shopcart.id, shopcart.id)
+        self.assertEqual(same_shopcart.email, shopcart.email)
 
     def test_serialize_a_shopcart(self):
         """It should Serialize a shopcart"""
