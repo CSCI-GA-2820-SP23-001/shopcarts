@@ -11,7 +11,6 @@ import logging
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 from tests.factories import ShopcartFactory, ItemFactory
-from service import app
 from service.common import status  # HTTP Status Codes
 from service.models import db, Shopcart, init_db
 from service.routes import app
@@ -316,6 +315,40 @@ class TestShopcartService(TestCase):
             content_type="application/json",
         )
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
+    ######################################################################
+    #  T E S T   A C T I O N S
+    ######################################################################
+
+    def test_increment_an_item(self):
+        """It should increase the quantity of an item"""
+        # create a known item
+        shopcart = self._create_shopcarts(1)[0]
+        item = ItemFactory()
+        resp = self.client.post(
+            f"{BASE_URL}/{shopcart.id}/items",
+            json=item.serialize(),
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        data = resp.get_json()
+        logging.debug(data)
+        item_id = data["id"]
+
+        old_quantity = int(item.quantity)
+        new_quantity = str(old_quantity + 1)
+
+        resp = self.client.put(
+            f"{BASE_URL}/{shopcart.id}/items/{item_id}/increment",
+            json=data,
+            content_type="application/json",
+        )
+
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        logging.debug("Response data: %s", data)
+        self.assertEqual(data["quantity"], new_quantity)
 
     ######################################################################
     #   O T H E R   T E S T   C A S E S
