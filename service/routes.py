@@ -347,7 +347,7 @@ def decrement_items(shopcart_id, item_id):
 
     old_quantity = int(item.quantity)
 
-    if (old_quantity == 1):
+    if old_quantity == 1:
         item.delete()
         return make_response("", status.HTTP_204_NO_CONTENT)
     else:
