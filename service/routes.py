@@ -298,7 +298,7 @@ def increment_items(shopcart_id, item_id):
 
     """
     Increase the Quantity of an Item in a Shopcart
-    This endpoint will update the quantity of an item based the body that is posted
+    This endpoint will update (increase) the quantity of an item based the body that is posted
     """
     app.logger.info(
         "Request to increment Item %s for Shopcart id: %s", (item_id, shopcart_id)
@@ -323,10 +323,47 @@ def increment_items(shopcart_id, item_id):
 
     return make_response(jsonify(item.serialize()), status.HTTP_200_OK)
 
+######################################################################
+# DECREASE QUANTITY OF ITEMS
+######################################################################
+
+
+@app.route("/shopcarts/<int:shopcart_id>/items/<int:item_id>/decrement", methods=["PUT"])
+def decrement_items(shopcart_id, item_id):
+
+    """
+    Decrease the Quantity of an Item in a Shopcart
+    This endpoint will update (decrease) the quantity of an item based the body that is posted
+    """
+    app.logger.info(
+        "Request to decrement Item %s for Shopcart id: %s", (item_id, shopcart_id)
+    )
+    check_content_type("application/json")
+
+    # See if the item exists and abort if it doesn't
+    item = Item.find(item_id)
+    if not item:
+        abort(
+            status.HTTP_404_NOT_FOUND,
+            f"Shopcart with id '{item_id}' could not be found.",
+        )
+
+    old_quantity = int(item.quantity)
+
+    if old_quantity == 1:
+        item.delete()
+        return make_response("", status.HTTP_204_NO_CONTENT)
+
+    item.deserialize(request.get_json())
+    new_quantity = old_quantity - 1
+    item.quantity = str(new_quantity)
+    return make_response(jsonify(item.serialize()), status.HTTP_200_OK)
 
 ######################################################################
 # U T I L I T Y   F U N C T I O N S
 ######################################################################
+
+
 def check_content_type(media_type):
     """Checks that the media type is correct"""
     content_type = request.headers.get("Content-Type")
