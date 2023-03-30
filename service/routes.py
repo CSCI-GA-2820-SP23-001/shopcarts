@@ -350,11 +350,11 @@ def decrement_items(shopcart_id, item_id):
     if old_quantity == 1:
         item.delete()
         return make_response("", status.HTTP_204_NO_CONTENT)
-    else:
-        item.deserialize(request.get_json())
-        new_quantity = old_quantity - 1
-        item.quantity = str(new_quantity)
-        return make_response(jsonify(item.serialize()), status.HTTP_200_OK)
+
+    item.deserialize(request.get_json())
+    new_quantity = old_quantity - 1
+    item.quantity = str(new_quantity)
+    return make_response(jsonify(item.serialize()), status.HTTP_200_OK)
 
 ######################################################################
 # U T I L I T Y   F U N C T I O N S
