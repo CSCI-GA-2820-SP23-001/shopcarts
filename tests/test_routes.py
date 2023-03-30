@@ -342,6 +342,80 @@ class TestShopcartService(TestCase):
         logging.debug("Response data: %s", data)
         self.assertEqual(data["quantity"], new_quantity)
 
+
+    def test_decrement_an_item(self):
+        """It should decrease the quantity of an item"""
+        
+        old_quantity=1
+
+        while old_quantity < 2:
+            # create a known item
+            shopcart = self._create_shopcarts(1)[0]
+            item = ItemFactory()
+            resp = self.client.post(
+                f"{BASE_URL}/{shopcart.id}/items",
+                json=item.serialize(),
+                content_type="application/json",
+            )
+
+            old_quantity = int(item.quantity)
+
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        data = resp.get_json()
+        logging.debug(data)
+        item_id = data["id"]
+
+        new_quantity = str(old_quantity - 1)
+
+        resp = self.client.put(
+            f"{BASE_URL}/{shopcart.id}/items/{item_id}/decrement",
+            json=data,
+            content_type="application/json",
+        )
+
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        
+        logging.debug("Response data: %s", data)
+        self.assertEqual(data["quantity"], new_quantity)
+
+    def test_decrement_single_item(self):
+        """If decrementing the quantity of a single item, the item should be deleted"""
+        
+        old_quantity=2
+
+        while old_quantity != 1:
+            # create a known item
+            shopcart = self._create_shopcarts(1)[0]
+            item = ItemFactory()
+            resp = self.client.post(
+                f"{BASE_URL}/{shopcart.id}/items",
+                json=item.serialize(),
+                content_type="application/json",
+            )
+            
+            old_quantity = int(item.quantity)
+
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        data = resp.get_json()
+        logging.debug(data)
+        item_id = data["id"]
+
+        resp = self.client.put(
+            f"{BASE_URL}/{shopcart.id}/items/{item_id}/decrement",
+            json=data,
+            content_type="application/json",
+        )
+
+        # retrieve it back and make sure item is not there
+        resp = self.client.get(
+            f"{BASE_URL}/{shopcart.id}/items/{item_id}",
+            content_type="application/json",
+        )
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
     ######################################################################
     #   O T H E R   T E S T   C A S E S
     ######################################################################
