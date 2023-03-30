@@ -323,6 +323,8 @@ def increment_items(shopcart_id, item_id):
 ######################################################################
 # DECREASE QUANTITY OF ITEMS
 ######################################################################
+
+
 @app.route("/shopcarts/<int:shopcart_id>/items/<int:item_id>/decrement", methods=["PUT"])
 def decrement_items(shopcart_id, item_id):
 
@@ -345,7 +347,7 @@ def decrement_items(shopcart_id, item_id):
 
     old_quantity = int(item.quantity)
 
-    if (old_quantity==1):
+    if (old_quantity == 1):
         item.delete()
         return make_response("", status.HTTP_204_NO_CONTENT)
     else:
@@ -357,6 +359,8 @@ def decrement_items(shopcart_id, item_id):
 ######################################################################
 # U T I L I T Y   F U N C T I O N S
 ######################################################################
+
+
 def check_content_type(media_type):
     """Checks that the media type is correct"""
     content_type = request.headers.get("Content-Type")
