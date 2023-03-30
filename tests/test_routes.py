@@ -112,13 +112,21 @@ class TestShopcartService(TestCase):
         self.assertEqual(len(data), 5)
 
     def test_get_shopcart_by_name(self):
-        """It should Get an Shopcart by Name"""
+        """It should Get a Shopcart by Name"""
         shopcarts = self._create_shopcarts(3)
         resp = self.client.get(BASE_URL, query_string=f"name={shopcarts[1].name}")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertEqual(data[0]["name"], shopcarts[1].name)
 
+    def test_get_shopcart_by_email(self):
+        """It should Get a Shopcart by Email"""
+        shopcarts = self._create_shopcarts(3)
+        resp = self.client.get(BASE_URL, query_string=f"email={shopcarts[1].email}")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(data[1]["email"], shopcarts[1].email)
+    
     def test_get_shopcart(self):
         """It should Read a single Shopcart"""
         # get the id of an shopcart

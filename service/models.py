@@ -213,7 +213,7 @@ class Shopcart(db.Model, PersistentBase):
         return self
 
     @classmethod
-    def find_by_name(cls, name):
+    def find_by_name(cls, name: str) -> list:
         """Returns all Shopcarts with the given name
 
         Args:
@@ -221,3 +221,13 @@ class Shopcart(db.Model, PersistentBase):
         """
         logger.info("Processing name query for %s ...", name)
         return cls.query.filter(cls.name == name)
+
+    @classmethod
+    def find_by_email(cls, email: str) -> list:
+        """Returns all Shopcarts with the given email
+
+        Args:
+            email (string): the email of the Shopcarts you want to match
+        """
+        logger.info("Processing email query for %s ...", email)
+        return cls.query.filter(cls.email == email)

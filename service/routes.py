@@ -38,14 +38,17 @@ def list_shopcarts():
 
     # Process the query string if any
     name = request.args.get("name")
+    email = request.args.get("email")
     if name:
         shopcarts = Shopcart.find_by_name(name)
+    elif name:
+        shopcarts = Shopcart.find_by_email(email)
     else:
         shopcarts = Shopcart.all()
 
     # Return as an array of dictionaries
     results = [shopcart.serialize() for shopcart in shopcarts]
-
+    app.logger.info("Returning %d shopcarts", len(results))
     return make_response(jsonify(results), status.HTTP_200_OK)
 
 ######################################################################
