@@ -174,6 +174,14 @@ class TestShopcartService(TestCase):
         resp = self.client.get("/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
 
+    def test_health_endpoint(self):
+        """It should call the health endpoint and return OK"""
+        resp = self.client.get("/health")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        logging.debug(data)
+        self.assertEqual(data["status"], "OK")
+
     def test_add_item(self):
         """It should Add an item to an shopcart"""
         shopcart = self._create_shopcarts(1)[0]
