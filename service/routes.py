@@ -25,6 +25,19 @@ def index():
         paths=url_for("list_shopcarts", _external=True),
     ), status.HTTP_200_OK
 
+
+######################################################################
+# GET HEALTH_CHECK
+######################################################################
+@app.route("/health")
+def health_check():
+    """Returns OK if service is healthy"""
+    app.logger.info("Request for health check")
+    return jsonify(
+        status="OK",
+    ), status.HTTP_200_OK
+
+
 ######################################################################
 # LIST ALL SHOPCARTS
 ######################################################################
