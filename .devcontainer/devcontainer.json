@@ -29,6 +29,7 @@
 				"rangav.vscode-thunder-client",
 				"ms-azuretools.vscode-docker",
 				"ms-kubernetes-tools.vscode-kubernetes-tools",
+				"IBM.ibmcloud-account",
 				"streetsidesoftware.code-spell-checker"
 			]	
 		},
