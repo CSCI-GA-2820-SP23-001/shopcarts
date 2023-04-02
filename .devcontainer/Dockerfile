@@ -7,6 +7,12 @@ FROM rofrano/nyu-devops-base:sp23
 #     sudo apt-get autoremove -y && \
 #     sudo apt-get clean -y
 
+# Set up the Python development environment
+WORKDIR /app
+COPY requirements.txt .
+RUN sudo python -m pip install --upgrade pip wheel && \
+    sudo pip install -r requirements.txt
+
 # Install user mode tools
 COPY .devcontainer/scripts/install-tools.sh /tmp/
 RUN cd /tmp && bash ./install-tools.sh
