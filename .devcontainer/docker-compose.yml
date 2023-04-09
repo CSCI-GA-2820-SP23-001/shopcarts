@@ -31,7 +31,8 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - ..:/app
+      - ~/.bluemix/project_apikey.json:/home/vscode/apikey.json
     networks:
       - dev
 
