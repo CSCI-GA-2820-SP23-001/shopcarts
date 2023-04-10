@@ -11,7 +11,7 @@ services:
     container_name: shopcarts
     volumes:
       - ..:/app
-      - ~/.bluemix/apikey.json:/home/vscode/apikey.json
+      - ~/.bluemix/project_apikey.json:/home/vscode/apikey.json
     command: sleep infinity
     environment:
       FLASK_APP: service:app
@@ -31,8 +31,7 @@ services:
     environment:
       POSTGRES_PASSWORD: postgres
     volumes:
-      - ..:/app
-      - ~/.bluemix/project_apikey.json:/home/vscode/apikey.json
+      - postgres:/var/lib/postgresql/data
     networks:
       - dev
 
