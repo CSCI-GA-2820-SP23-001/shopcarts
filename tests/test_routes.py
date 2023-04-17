@@ -38,7 +38,6 @@ class TestShopcartService(TestCase):
         app.logger.setLevel(logging.CRITICAL)
         init_db(app)
 
-    @classmethod
     def tearDownClass(cls):
         """Runs once before test suite"""
 
