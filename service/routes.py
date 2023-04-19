@@ -19,11 +19,12 @@ from service import app  # Import Flask application
 @app.route("/")
 def index():
     """Returns all of the Shopcarts"""
-    return jsonify(
-        name="Shopcart REST API Service",
-        version="1.0",
-        paths=url_for("list_shopcarts", _external=True),
-    ), status.HTTP_200_OK
+    return app.send_static_file("index.html")
+    # return jsonify(
+    #     name="Shopcart REST API Service",
+    #     version="1.0",
+    #     paths=url_for("list_shopcarts", _external=True),
+    # ), status.HTTP_200_OK
 
 
 ######################################################################
