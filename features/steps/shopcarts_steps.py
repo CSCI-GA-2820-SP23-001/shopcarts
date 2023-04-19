@@ -16,7 +16,7 @@
 
 """
 Shopcart Steps
-Steps file for Shopcart.feature
+Steps file for Shopcarts.feature
 For information on Waiting until elements are present in the HTML see:
     https://selenium-python.readthedocs.io/waits.html
 """
@@ -37,47 +37,32 @@ def step_impl(context):
         expect(context.resp.status_code).to_equal(204)
 
 # load the database with new shopcarts and items
-for row in context.table:
-    payload = {
-        "name": row['name'],
-        "email": row['email'],
-        "phone_number": row['phone_number'],
-        "date_joined": row['date_joined']
-        }
-    resp = requests.post(rest_endpoint + "/shopcarts", json=payload)
-    expect(resp.status_code).to_equal(201)
+    for row in context.table:
+        payload = {
+            "name": row['name'],
+            "email": row['email'],
+            "phone_number": row['phone_number'],
+            "date_joined": row['date_joined'],
+            "items": []
+            }
+        resp = requests.post(rest_endpoint, json=payload)
+        expect(resp.status_code).to_equal(201)
 
-    # get the ID of the newly created shopcart
-    shopcart_id = resp.json()["id"]
-
-    # create the associated item records
-    items_payload = []
-    for item in row['items']:
-        item_payload = {
-            "name": item['name'],
-            "quantity": item['quantity'],
-            "color": item['color'],
-            "size": item['size'],
-            "price": item['price'],
-            "shopcart_id": shopcart_id
-        }
-        items_payload.append(item_payload)
-
-    # create the item records
-    resp = requests.post(rest_endpoint + "/items", json=items_payload)
-    expect(resp.status_code).to_equal(201)
-
-    
 @given("the following items")
 def step_impl(context):
+    rest_endpoint = f"{context.BASE_URL}/shopcarts"
     for row in context.table:
+        resp = requests.get(rest_endpoint + "?email="+row['shopcart_email'])
+        expect(resp.status_code).to_equal(200)
+        data = resp.json()
+        shopcart_id = data[0]['id']
         payload = {
             "name": row['name'],
             "quantity": row['quantity'],
             "color": row['color'],
             "size": row['size'],
-            "price": row['price'],
-            "shopcart_id": row['shopcart_id']
+            "price": row['price']
         }
-        resp = requests.post(rest_endpoint + "/items", json=payload)
-        expect(resp.status_code).to_equal(201)
+        resp = requests.post(rest_endpoint + "/"+str(shopcart_id)+"/items", json=payload)
+        expect(resp.status_code).to_equal(201) 
+        

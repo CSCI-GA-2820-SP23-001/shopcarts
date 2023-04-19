@@ -54,7 +54,7 @@ def list_shopcarts():
     email = request.args.get("email")
     if name:
         shopcarts = Shopcart.find_by_name(name)
-    elif name:
+    elif email:
         shopcarts = Shopcart.find_by_email(email)
     else:
         shopcarts = Shopcart.all()

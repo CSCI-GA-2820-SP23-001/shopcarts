@@ -3,23 +3,24 @@ Feature: The shopcarts service back-end
     I need a RESTful catalog service
     So that I can keep track of all my shopcarts
 
+
 Background:
     Given the following shopcarts
         | shopcart_id | name       | email              | phone_number    | date_joined    |
-        | 1           | Chris      | chris@gmail.com    | 7575550000      | 02/05/2015     |
-        | 2           | Katelyn    | kate@gmail.com     | 5835550987      | 06/21/2000     |
-        | 3           | Jon        | john@gmail.com     | 2095558739      | 01/01/2023     |
-        | 4           | Steven     | steven@gmail.com   | 2098675535      | 05/14/2005     |
+        | 1           | Chris      | chris@gmail.com    | 7575550000      | 2015-05-02     |
+        | 2           | Katelyn    | kate@gmail.com     | 5835550987      | 2006-05-05     |
+        | 3           | Jon        | john@gmail.com     | 2095558739      | 2023-01-20     |
+        | 4           | Steven     | steven@gmail.com   | 2098675535      | 2005-05-20     |
 
 
     Given the following items
-        | shopcart_id | name       | quantity | color   | size | price |
-        | 1           | shirt      | 1        | red     | M    | 20.00 |
-        | 1           | pants      | 2        | blue    | S    | 30.00 |
-        | 2           | pants      | 1        | black   | L    | 25.00 |
-        | 2           | shirt      | 1        | green   | M    | 20.00 |
-        | 3           | underwear  | 3        | white   | L    | 15.00 |
-        | 4           | headband   | 1        | yellow  | NA   | 5.00  |
+        | shopcart_email         | name       | quantity  | color     | size  | price |
+        | chris@gmail.com        | shirt      | 1         | red       | M     | 20.00 |
+        | chris@gmail.com        | pants      | 2         | blue      | S     | 30.00 |
+        | kate@gmail.com         | pants      | 1         | black     | L     | 25.00 |
+        | kate@gmail.com         | shirt      | 1         | green     | M     | 20.00 |
+        | john@gmail.com         | underwear  | 3         | white     | L     | 15.00 |
+        | steven@gmail.com       | headband   | 1         | yellow    | NA    | 5.00  |
 
 
 Scenario: The server is running
