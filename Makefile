@@ -72,6 +72,11 @@ depoy: ## Deploy the service on local Kubernetes
 	$(info Deploying service locally...)
 	kubectl apply -f deploy/
 
+.PHONY: push
+image-push: ## Push to a Docker image registry
+	$(info Logging into IBM Cloud cluster $(CLUSTER)...)
+	docker push $(IMAGE)
+
 ############################################################
 # COMMANDS FOR BUILDING THE IMAGE
 ############################################################

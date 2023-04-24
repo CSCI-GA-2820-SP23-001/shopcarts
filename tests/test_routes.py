@@ -124,7 +124,7 @@ class TestShopcartService(TestCase):
         resp = self.client.get(BASE_URL, query_string=f"email={shopcarts[1].email}")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
-        self.assertEqual(data[1]["email"], shopcarts[1].email)
+        self.assertEqual(data[0]["email"], shopcarts[1].email)
     
     def test_get_shopcart(self):
         """It should Read a single Shopcart"""
