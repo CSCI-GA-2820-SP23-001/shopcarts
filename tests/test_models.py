@@ -18,6 +18,7 @@ DATABASE_URI = os.getenv(
 #  S H O P C A R T   M O D E L   T E S T   C A S E S
 ######################################################################
 
+
 class TestShopcart(unittest.TestCase):
     """Test Cases for Shopcart Model"""
 
@@ -199,7 +200,6 @@ class TestShopcart(unittest.TestCase):
     ######################################################################
 
     def test_add_a_shopcart(self):
-
         """It should Create an shopcart and add it to the database"""
         shopcarts = Shopcart.all()
         self.assertEqual(shopcarts, [])
@@ -211,7 +211,6 @@ class TestShopcart(unittest.TestCase):
         self.assertEqual(len(shopcarts), 1)
 
     def test_add_shopcart_item(self):
-
         """It should Create an shopcart with an item and add it to the database"""
         shopcarts = Shopcart.all()
         self.assertEqual(shopcarts, [])

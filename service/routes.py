@@ -34,9 +34,12 @@ def index():
 def health_check():
     """Returns OK if service is healthy"""
     app.logger.info("Request for health check")
-    return jsonify(
-        status="OK",
-    ), status.HTTP_200_OK
+    return (
+        jsonify(
+            status="OK",
+        ),
+        status.HTTP_200_OK,
+    )
 
 
 ######################################################################
@@ -65,6 +68,7 @@ def list_shopcarts():
     app.logger.info("Returning %d shopcarts", len(results))
     return make_response(jsonify(results), status.HTTP_200_OK)
 
+
 ######################################################################
 # CREATE A NEW SHOPCART
 ######################################################################
@@ -91,6 +95,7 @@ def create_shopcarts():
     return make_response(
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
     )
+
 
 ######################################################################
 # RETRIEVE A SHOPCART
@@ -154,7 +159,8 @@ def update_shopcarts(shopcart_id):
     shopcart = Shopcart.find(shopcart_id)
     if not shopcart:
         abort(
-            status.HTTP_404_NOT_FOUND, f"Shopcart with id '{shopcart_id}' was not found."
+            status.HTTP_404_NOT_FOUND,
+            f"Shopcart with id '{shopcart_id}' was not found.",
         )
 
     # Update from the json in the body of the request
@@ -168,6 +174,7 @@ def update_shopcarts(shopcart_id):
 ######################################################################
 # I T E M   M E T H O D S
 ######################################################################
+
 
 ######################################################################
 # ADD AN ITEM TO A SHOPCART
@@ -202,6 +209,7 @@ def create_items(shopcart_id):
     message = item.serialize()
 
     return make_response(jsonify(message), status.HTTP_201_CREATED)
+
 
 ######################################################################
 # RETRIEVE AN ITEM FROM A SHOPCART
@@ -307,9 +315,10 @@ def delete_items(shopcart_id, item_id):
 ######################################################################
 # INCREASE QUANTITY OF ITEMS
 ######################################################################
-@app.route("/shopcarts/<int:shopcart_id>/items/<int:item_id>/increment", methods=["PUT"])
+@app.route(
+    "/shopcarts/<int:shopcart_id>/items/<int:item_id>/increment", methods=["PUT"]
+)
 def increment_items(shopcart_id, item_id):
-
     """
     Increase the Quantity of an Item in a Shopcart
     This endpoint will update (increase) the quantity of an item based the body that is posted
@@ -337,14 +346,16 @@ def increment_items(shopcart_id, item_id):
 
     return make_response(jsonify(item.serialize()), status.HTTP_200_OK)
 
+
 ######################################################################
 # DECREASE QUANTITY OF ITEMS
 ######################################################################
 
 
-@app.route("/shopcarts/<int:shopcart_id>/items/<int:item_id>/decrement", methods=["PUT"])
+@app.route(
+    "/shopcarts/<int:shopcart_id>/items/<int:item_id>/decrement", methods=["PUT"]
+)
 def decrement_items(shopcart_id, item_id):
-
     """
     Decrease the Quantity of an Item in a Shopcart
     This endpoint will update (decrease) the quantity of an item based the body that is posted
@@ -372,6 +383,7 @@ def decrement_items(shopcart_id, item_id):
     new_quantity = old_quantity - 1
     item.quantity = str(new_quantity)
     return make_response(jsonify(item.serialize()), status.HTTP_200_OK)
+
 
 ######################################################################
 # U T I L I T Y   F U N C T I O N S

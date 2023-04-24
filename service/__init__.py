@@ -6,6 +6,7 @@ and SQL database
 """
 import sys
 from flask import Flask
+
 # pylint: disable=cyclic-import
 from service import config
 from service.common import log_handlers
@@ -18,6 +19,7 @@ app.config.from_object(config)
 # Dependencies require we import the routes AFTER the Flask app is created
 # pylint: disable=wrong-import-position, wrong-import-order
 from service import routes, models  # noqa: E402, E261
+
 # pylint: disable=wrong-import-position
 from service.common import error_handlers, cli_commands  # noqa: F401, E402
 

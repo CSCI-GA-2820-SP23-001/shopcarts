@@ -28,6 +28,30 @@ Scenario: The server is running
     Then I should see "Shopcart Demo RESTful Service" in the title
     And I should not see "404 Not Found"
 
+
+Scenario: Create a Shopcart
+    When I visit the "Home Page"
+    And I set the "Name" to "Greg"
+    And I set the "Email" to "greg@test.com"
+    And I set the "Phone Number" to "6786286400"
+    And I set the "Date Joined" to "04/12/2023"
+    And I press the "Create" button
+    Then I should see the message "Success"
+    When I copy the "ID" field
+    And I press the "Clear" button
+    Then the "ID" field should be empty
+    And the "Name" field should be empty
+    And the "Email" field should be empty
+    When I paste the "ID" field
+    And I press the "Retrieve" button
+    Then I should see the message "Success"
+    And I should see "Greg" in the "Name" field
+    And I should see "greg@test.com" in the "Email" field
+    And I should see "6786286400" in the "Phone Number" field
+    And I should see "2024-04-04" in the "Date Joined" field
+
+
+
 # Scenario: Create a Shopcart
 #     When I visit the "Home Page"
 #     And I set the "Name" to "Happy"
