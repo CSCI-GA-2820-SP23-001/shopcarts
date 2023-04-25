@@ -11,7 +11,6 @@ $(function () {
         $("#shopcart_email").val(res.email);
         $("#shopcart_phone_number").val(res.phone_number);
         $("#shopcart_date_joined").val(res.date_joined);
-        $("#shopcart_items").val(res.items);
     }
 
     /// Clears all form fields
@@ -20,7 +19,6 @@ $(function () {
         $("#shopcart_email").val("");
         $("#shopcart_phone_number").val("");
         $("#shopcart_date_joined").val("");
-        $("#shopcart_items").val("");
     }
 
     // Updates the flash message area
@@ -29,45 +27,45 @@ $(function () {
         $("#flash_message").append(message);
     }
 
-//     // ****************************************
-//     // Create a Shopcart
-//     // ****************************************
+    // ****************************************
+    // Create a Shopcart
+    // ****************************************
 
-//     $("#create-btn").click(function () {
+    $("#create-btn").click(function () {
 
-//         let name = $("#shopcart_name").val();
-//         let category = $("#shopcart_category").val();
-//         let available = $("#shopcart_available").val() == "true";
-//         let gender = $("#shopcart_gender").val();
-//         let birthday = $("#shopcart_birthday").val();
+        let name = $("#shopcart_name").val();
+        let email = $("#shopcart_email").val();
+        let phone_number = $("#shopcart_phone_number").val();
+        let date_joined = $("#shopcart_date_joined").val();
 
-//         let data = {
-//             "name": name,
-//             "category": category,
-//             "available": available,
-//             "gender": gender,
-//             "birthday": birthday
-//         };
+        let data = {
+            "name": name,
+            "email": email,
+            "phone_number": phone_number,
+            "date_joined": date_joined,
+            "items": []
+        };
 
-//         $("#flash_message").empty();
-        
-//         let ajax = $.ajax({
-//             type: "POST",
-//             url: "/shopcarts",
-//             contentType: "application/json",
-//             data: JSON.stringify(data),
-//         });
+        $("#flash_message").empty();
 
-//         ajax.done(function(res){
-//             update_form_data(res)
-//             flash_message("Success")
-//         });
+        let ajax = $.ajax({
+            type: "POST",
+            url: "/shopcarts",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+        });
 
-//         ajax.fail(function(res){
-//             flash_message(res.responseJSON.message)
-//         });
-//     });
+        ajax.done(function (res) {
+            update_form_data(res)
+            flash_message("Success")
+        });
 
+        ajax.fail(function(res){
+            flash_message(res.responseJSON.message)
+        });
+    });
+
+   
 
 //     // ****************************************
 //     // Update a Shopcart
@@ -110,35 +108,35 @@ $(function () {
 
 //     });
 
-//     // ****************************************
-//     // Retrieve a Shopcart
-//     // ****************************************
+    // ****************************************
+    // Retrieve a Shopcart
+    // ****************************************
 
-//     $("#retrieve-btn").click(function () {
+    $("#retrieve-btn").click(function () {
 
-//         let shopcart_id = $("#shopcart_id").val();
+        let shopcart_id = $("#shopcart_id").val();
 
-//         $("#flash_message").empty();
+        $("#flash_message").empty();
 
-//         let ajax = $.ajax({
-//             type: "GET",
-//             url: `/shopcarts/${shopcart_id}`,
-//             contentType: "application/json",
-//             data: ''
-//         })
+        let ajax = $.ajax({
+            type: "GET",
+            url: `/shopcarts/${shopcart_id}`,
+            contentType: "application/json",
+            data: ''
+        })
 
-//         ajax.done(function(res){
-//             //alert(res.toSource())
-//             update_form_data(res)
-//             flash_message("Success")
-//         });
+        ajax.done(function(res){
+            //alert(res.toSource())
+            update_form_data(res)
+            flash_message("Success")
+        });
 
-//         ajax.fail(function(res){
-//             clear_form_data()
-//             flash_message(res.responseJSON.message)
-//         });
+        ajax.fail(function(res){
+            clear_form_data()
+            flash_message(res.responseJSON.message)
+        });
 
-//     });
+    });
 
 //     // ****************************************
 //     // Delete a Shopcart
@@ -167,15 +165,15 @@ $(function () {
 //         });
 //     });
 
-//     // ****************************************
-//     // Clear the form
-//     // ****************************************
+    // ****************************************
+    // Clear the form
+    // ****************************************
 
-//     $("#clear-btn").click(function () {
-//         $("#shopcart_id").val("");
-//         $("#flash_message").empty();
-//         clear_form_data()
-//     });
+    $("#clear-btn").click(function () {
+        $("#shopcart_id").val("");
+        $("#flash_message").empty();
+        clear_form_data()
+    });
 
 //     // ****************************************
 //     // Search for a Shopcart

@@ -21,8 +21,9 @@ class DataValidationError(Exception):
 
 # Function to initialize the database
 def init_db(app):
-    """ Initializes the SQLAlchemy app """
+    """Initializes the SQLAlchemy app"""
     Shopcart.init_db(app)
+
 
 ######################################################################
 #  P E R S I S T E N T   B A S E   M O D E L
@@ -87,6 +88,7 @@ class PersistentBase:
         logger.info("Processing lookup for id %s ...", by_id)
         return cls.query.get(by_id)
 
+
 ######################################################################
 #  I T E M   M O D E L
 ######################################################################
@@ -99,7 +101,9 @@ class Item(db.Model, PersistentBase):
 
     # Table Schema
     id = db.Column(db.Integer, primary_key=True)
-    shopcart_id = db.Column(db.Integer, db.ForeignKey("shopcart.id", ondelete="CASCADE"), nullable=False)
+    shopcart_id = db.Column(
+        db.Integer, db.ForeignKey("shopcart.id", ondelete="CASCADE"), nullable=False
+    )
     name = db.Column(db.String(64))  # e.g., work, home, vacation, etc.
     quantity = db.Column(db.String(4))
     color = db.Column(db.String(20))
@@ -121,7 +125,7 @@ class Item(db.Model, PersistentBase):
             "quantity": self.quantity,
             "color": self.color,
             "size": self.size,
-            "price": self.price
+            "price": self.price,
         }
 
     def deserialize(self, data: dict) -> None:
@@ -138,7 +142,9 @@ class Item(db.Model, PersistentBase):
             self.size = data["size"]
             self.price = data["price"]
         except KeyError as error:
-            raise DataValidationError("Invalid Item: missing " + error.args[0]) from error
+            raise DataValidationError(
+                "Invalid Item: missing " + error.args[0]
+            ) from error
         except TypeError as error:
             raise DataValidationError(
                 "Invalid Item: body of request contained "
@@ -203,7 +209,9 @@ class Shopcart(db.Model, PersistentBase):
                 item.deserialize(json_item)
                 self.items.append(item)
         except KeyError as error:
-            raise DataValidationError("Invalid Shopcart: missing " + error.args[0]) from error
+            raise DataValidationError(
+                "Invalid Shopcart: missing " + error.args[0]
+            ) from error
         except TypeError as error:
             raise DataValidationError(
                 "Invalid Shopcart: body of request contained "

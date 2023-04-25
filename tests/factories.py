@@ -27,6 +27,7 @@ class ShopcartFactory(factory.Factory):
     # pylint: disable=too-few-public-methods
     class Meta:
         """Persistent class"""
+
         model = Shopcart
 
     id = factory.Sequence(lambda n: n)
@@ -38,7 +39,9 @@ class ShopcartFactory(factory.Factory):
     # https://factoryboy.readthedocs.io/en/latest/recipes.html#simple-many-to-many-relationship
 
     @factory.post_generation
-    def items(self, create, extracted, **kwargs):   # pylint: disable=method-hidden, unused-argument
+    def items(
+        self, create, extracted, **kwargs
+    ):  # pylint: disable=method-hidden, unused-argument
         """Creates the items list"""
         if not create:
             return
@@ -53,6 +56,7 @@ class ItemFactory(factory.Factory):
     # pylint: disable=too-few-public-methods
     class Meta:
         """Persistent class"""
+
         model = Item
 
     id = factory.Sequence(lambda n: n)
