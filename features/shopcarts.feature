@@ -68,15 +68,15 @@ Scenario: Search for name
     And I should not see "Jon" in the results
     And I should not see "Steven" in the results
 
-# Scenario: Search for available
-#     When I visit the "Home Page"
-#     And I select "True" in the "Available" dropdown
-#     And I press the "Search" button
-#     Then I should see the message "Success"
-#     And I should see "fido" in the results
-#     And I should see "kitty" in the results
-#     And I should see "sammy" in the results
-#     And I should not see "leo" in the results
+Scenario: Search for email
+    When I visit the "Home Page"
+    And I set the "Email" to "chris@gmail.com"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "chris@gmail.com" in the results
+    And I should see "Chris" in the results
+    And I should not see "john@gmail.com" in the results
+    And I should not see "steven@gmail.com" in the results
 
 # Scenario: Update a Pet
 #     When I visit the "Home Page"
