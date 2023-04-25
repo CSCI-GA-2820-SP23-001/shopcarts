@@ -58,14 +58,15 @@ Scenario: Create a Shopcart
 #     And I should see "kitty" in the results
 #     And I should not see "leo" in the results
 
-# Scenario: Search for dogs
-#     When I visit the "Home Page"
-#     And I set the "Category" to "dog"
-#     And I press the "Search" button
-#     Then I should see the message "Success"
-#     And I should see "fido" in the results
-#     And I should not see "kitty" in the results
-#     And I should not see "leo" in the results
+Scenario: Search for name
+    When I visit the "Home Page"
+    And I set the "Name" to "Chris"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "Chris" in the results
+    And I should not see "Katelyn" in the results
+    And I should not see "Jon" in the results
+    And I should not see "Steven" in the results
 
 # Scenario: Search for available
 #     When I visit the "Home Page"
