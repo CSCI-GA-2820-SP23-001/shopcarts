@@ -175,80 +175,67 @@ $(function () {
         clear_form_data()
     });
 
-//     // ****************************************
-//     // Search for a Shopcart
-//     // ****************************************
+    // ****************************************
+    // Search for a Shopcart
+    // ****************************************
 
-//     $("#search-btn").click(function () {
+    $("#search-btn").click(function () {
 
-//         let name = $("#shopcart_name").val();
-//         let category = $("#shopcart_category").val();
-//         let available = $("#shopcart_available").val() == "true";
+        let name = $("#shopcart_name").val();
+        let email = $("#shopcart_email").val();
 
-//         let queryString = ""
+        let queryString = ""
 
-//         if (name) {
-//             queryString += 'name=' + name
-//         }
-//         if (category) {
-//             if (queryString.length > 0) {
-//                 queryString += '&category=' + category
-//             } else {
-//                 queryString += 'category=' + category
-//             }
-//         }
-//         if (available) {
-//             if (queryString.length > 0) {
-//                 queryString += '&available=' + available
-//             } else {
-//                 queryString += 'available=' + available
-//             }
-//         }
+        if (name) {
+            queryString += 'name=' + name
+        }
+        if (email) {
+            queryString += 'email=' + email
+        }
 
-//         $("#flash_message").empty();
+        $("#flash_message").empty();
 
-//         let ajax = $.ajax({
-//             type: "GET",
-//             url: `/shopcarts?${queryString}`,
-//             contentType: "application/json",
-//             data: ''
-//         })
+        let ajax = $.ajax({
+            type: "GET",
+            url: `/shopcarts?${queryString}`,
+            contentType: "application/json",
+            data: ''
+        })
 
-//         ajax.done(function(res){
-//             //alert(res.toSource())
-//             $("#search_results").empty();
-//             let table = '<table class="table table-striped" cellpadding="10">'
-//             table += '<thead><tr>'
-//             table += '<th class="col-md-2">ID</th>'
-//             table += '<th class="col-md-2">Name</th>'
-//             table += '<th class="col-md-2">Category</th>'
-//             table += '<th class="col-md-2">Available</th>'
-//             table += '<th class="col-md-2">Gender</th>'
-//             table += '<th class="col-md-2">Birthday</th>'
-//             table += '</tr></thead><tbody>'
-//             let firstShopcart = "";
-//             for(let i = 0; i < res.length; i++) {
-//                 let shopcart = res[i];
-//                 table +=  `<tr id="row_${i}"><td>${shopcart.id}</td><td>${shopcart.name}</td><td>${shopcart.category}</td><td>${shopcart.available}</td><td>${shopcart.gender}</td><td>${shopcart.birthday}</td></tr>`;
-//                 if (i == 0) {
-//                     firstShopcart = shopcart;
-//                 }
-//             }
-//             table += '</tbody></table>';
-//             $("#search_results").append(table);
+        ajax.done(function(res){
+            //alert(res.toSource())
+            $("#search_results").empty();
+            let table = '<table class="table table-striped" cellpadding="10">'
+            table += '<thead><tr>'
+            table += '<th class="col-md-2">ID</th>'
+            table += '<th class="col-md-2">Name</th>'
+            table += '<th class="col-md-2">Email</th>'
+            table += '<th class="col-md-2">Phone Number</th>'
+            table += '<th class="col-md-2">Date Joined</th>'
+            table += '</tr></thead><tbody>'
+            let firstShopcart = "";
+            for(let i = 0; i < res.length; i++) {
+                let shopcart = res[i];
+                table +=  `<tr id="row_${i}"><td>${shopcart.id}</td><td>${shopcart.name}</td><td>${shopcart.email}</td><td>${shopcart.phone_number}</td><td>${shopcart.date_joined}</td></tr>`;
+                if (i == 0) {
+                    firstShopcart = shopcart;
+                }
+            }
+            table += '</tbody></table>';
+            $("#search_results").append(table);
 
-//             // copy the first result to the form
-//             if (firstShopcart != "") {
-//                 update_form_data(firstShopcart)
-//             }
+            // copy the first result to the form
+            if (firstShopcart != "") {
+                update_form_data(firstShopcart)
+            }
 
-//             flash_message("Success")
-//         });
+            flash_message("Success")
+        });
 
-//         ajax.fail(function(res){
-//             flash_message(res.responseJSON.message)
-//         });
+        ajax.fail(function(res){
+            flash_message(res.responseJSON.message)
+        });
 
-//     });
+    });
 
  })
