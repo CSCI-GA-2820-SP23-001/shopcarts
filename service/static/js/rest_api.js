@@ -67,46 +67,45 @@ $(function () {
 
    
 
-//     // ****************************************
-//     // Update a Shopcart
-//     // ****************************************
+    // ****************************************
+    // Update a Shopcart
+    // ****************************************
 
-//     $("#update-btn").click(function () {
+    $("#update-btn").click(function () {
 
-//         let shopcart_id = $("#shopcart_id").val();
-//         let name = $("#shopcart_name").val();
-//         let category = $("#shopcart_category").val();
-//         let available = $("#shopcart_available").val() == "true";
-//         let gender = $("#shopcart_gender").val();
-//         let birthday = $("#shopcart_birthday").val();
+        let shopcart_id = $("#shopcart_id").val();
+        let name = $("#shopcart_name").val();
+        let email = $("#shopcart_email").val();
+        let phone_number = $("#shopcart_phone_number").val();
+        let date_joined = $("#shopcart_date_joined").val();
+        
+        let data = {
+            "name": name,
+            "email": email,
+            "phone_number": phone_number,
+            "date_joined": date_joined,
+            "items": []
+        };
 
-//         let data = {
-//             "name": name,
-//             "category": category,
-//             "available": available,
-//             "gender": gender,
-//             "birthday": birthday
-//         };
+        $("#flash_message").empty();
 
-//         $("#flash_message").empty();
+        let ajax = $.ajax({
+                type: "PUT",
+                url: `/shopcarts/${shopcart_id}`,
+                contentType: "application/json",
+                data: JSON.stringify(data)
+            })
 
-//         let ajax = $.ajax({
-//                 type: "PUT",
-//                 url: `/shopcarts/${shopcart_id}`,
-//                 contentType: "application/json",
-//                 data: JSON.stringify(data)
-//             })
+        ajax.done(function(res){
+            update_form_data(res)
+            flash_message("Success")
+        });
 
-//         ajax.done(function(res){
-//             update_form_data(res)
-//             flash_message("Success")
-//         });
+        ajax.fail(function(res){
+            flash_message(res.responseJSON.message)
+        });
 
-//         ajax.fail(function(res){
-//             flash_message(res.responseJSON.message)
-//         });
-
-//     });
+    });
 
     // ****************************************
     // Retrieve a Shopcart
