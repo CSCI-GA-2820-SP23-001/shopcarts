@@ -224,7 +224,7 @@ def get_items(shopcart_id, item_id):
     This endpoint returns just an item
     """
     app.logger.info(
-        "Request to retrieve Item %s for Shopcart id: %s", (item_id, shopcart_id)
+        "Request to retrieve Item %s for Shopcart id: %s", item_id, shopcart_id
     )
 
     # See if the item exists and abort if it doesn't
@@ -270,7 +270,7 @@ def update_items(shopcart_id, item_id):
     This endpoint will update an item based the body that is posted
     """
     app.logger.info(
-        "Request to update Item %s for Shopcart id: %s", (item_id, shopcart_id)
+        "Request to update Item %s for Shopcart id: %s", item_id, shopcart_id
     )
     check_content_type("application/json")
 
@@ -301,7 +301,7 @@ def delete_items(shopcart_id, item_id):
     This endpoint will delete an Item based the id specified in the path
     """
     app.logger.info(
-        "Request to delete Item %s for Shopcart id: %s", (item_id, shopcart_id)
+        "Request to delete Item %s for Shopcart id: %s", item_id, shopcart_id
     )
 
     # See if the item exists and delete it if it does
@@ -324,7 +324,7 @@ def increment_items(shopcart_id, item_id):
     This endpoint will update (increase) the quantity of an item based the body that is posted
     """
     app.logger.info(
-        "Request to increment Item %s for Shopcart id: %s", (item_id, shopcart_id)
+        "Request to increment Item %s for Shopcart id: %s", item_id, shopcart_id
     )
     check_content_type("application/json")
 
@@ -340,7 +340,6 @@ def increment_items(shopcart_id, item_id):
     new_quantity = old_quantity + 1
 
     # Update from the json in the body of the request
-    item.deserialize(request.get_json())
     item.quantity = str(new_quantity)
     item.update()
 
@@ -361,7 +360,7 @@ def decrement_items(shopcart_id, item_id):
     This endpoint will update (decrease) the quantity of an item based the body that is posted
     """
     app.logger.info(
-        "Request to decrement Item %s for Shopcart id: %s", (item_id, shopcart_id)
+        "Request to decrement Item %s for Shopcart id: %s", item_id, shopcart_id
     )
     check_content_type("application/json")
 
@@ -379,7 +378,6 @@ def decrement_items(shopcart_id, item_id):
         item.delete()
         return make_response("", status.HTTP_204_NO_CONTENT)
 
-    item.deserialize(request.get_json())
     new_quantity = old_quantity - 1
     item.quantity = str(new_quantity)
     return make_response(jsonify(item.serialize()), status.HTTP_200_OK)

@@ -50,13 +50,13 @@ Scenario: Create a Shopcart
     And I should see "6786286400" in the "Phone Number" field
     And I should see "2023-04-12" in the "Date Joined" field
 
-# Scenario: List all pets
-#     When I visit the "Home Page"
-#     And I press the "Search" button
-#     Then I should see the message "Success"
-#     And I should see "fido" in the results
-#     And I should see "kitty" in the results
-#     And I should not see "leo" in the results
+Scenario: List all shopcarts
+    When I visit the "Home Page"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    And I should see "Chris" in the results
+    And I should see "Steven" in the results
+    And I should not see "Christiana" in the results
 
 Scenario: Search for name
     When I visit the "Home Page"
