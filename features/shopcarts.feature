@@ -178,3 +178,17 @@ Scenario: Update an item in a Shopcart
    And I should see "Sweater" in the item results
    And I should not see "M" in the item results
    And I should not see "shirt" in the item results
+
+Scenario: Delete an item in the shopcart
+   When I visit the "Home Page"
+   And I press the "Search" button
+   Then I should see the message "Success"
+   When I copy the "ID" field
+   And I paste the "Shopcart ID" field
+   And I press the "Retrieve Item" button
+   Then I should see the message "Success"
+   When I press the "Delete Item" button
+   And I paste the "Shopcart ID" field
+   And I press the "Retrieve Item" button
+   Then I should not see "shirt" in the item results
+   And I should see "pants" in the item results
