@@ -118,3 +118,14 @@ Scenario: Delete a Shopcart
     And I press the "Search" button
     Then I should see the message "Success"
     And I should not see "chris@gmail.com" in the results
+
+Scenario: List items in a shopcart 
+    When I visit the "Home Page"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    When I copy the "ID" field
+    And I paste the "Shopcart ID" field
+    And I press the "Retrieve Item" button
+    Then I should see the message "Success"
+    And I should see "shirt" in the item results
+    And I should see "pants" in the item results
