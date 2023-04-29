@@ -129,3 +129,34 @@ Scenario: List items in a shopcart
     Then I should see the message "Success"
     And I should see "shirt" in the item results
     And I should see "pants" in the item results
+
+Scenario: Create an item in the shopcart
+    When I visit the "Home Page"
+    And I press the "Search" button
+    Then I should see the message "Success"
+    When I copy the "ID" field
+    And I paste the "Shopcart ID" field
+    And I press the "Retrieve Item" button
+    Then I should see the message "Success"
+    When I set the "Item Name" to "Blouse"
+    And I set the "Item Quantity" to "5"
+    And I set the "Item Color" to "Pink"
+    And I set the "Item Size" to "XL"
+    And I set the "Item Price" to "100"
+    And I press the "Create Item" button
+    Then I should see the message "Success"
+    When I press the "Clear Item" button
+    Then the "Item Name" field should be empty
+    And the "Item Quantity" field should be empty
+    And the "Item Color" field should be empty
+    And the "Item Size" field should be empty
+    And the "Item Price" field should be empty
+    When I copy the "ID" field
+    And I paste the "Shopcart ID" field
+    And I press the "Retrieve Item" button
+    Then I should see the message "Success"
+    And I should see "Blouse" in the item results
+    And I should see "5" in the item results
+    And I should see "Pink" in the item results
+    And I should see "XL" in the item results
+    And I should see "100" in the item results
