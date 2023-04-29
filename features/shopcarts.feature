@@ -160,3 +160,21 @@ Scenario: Create an item in the shopcart
     And I should see "Pink" in the item results
     And I should see "XL" in the item results
     And I should see "100" in the item results
+
+Scenario: Update an item in a Shopcart
+   When I visit the "Home Page"
+   And I set the "Name" to "Chris"
+   And I press the "Search" button
+   Then I should see the message "Success"
+   When I copy the "ID" field
+   And I paste the "Shopcart ID" field
+   And I press the "Retrieve Item" button
+   Then I should see the message "Success"
+   When I set the "Item Name" to "Sweater"
+   And I set the "Item Size" to "XL"
+   And I press the "Update Item" button 
+   And I press the "Retrieve Item" button 
+   Then I should see "XL" in the item results
+   And I should see "Sweater" in the item results
+   And I should not see "M" in the item results
+   And I should not see "shirt" in the item results
