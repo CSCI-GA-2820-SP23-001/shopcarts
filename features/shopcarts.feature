@@ -181,19 +181,20 @@ Scenario: Update an item in a Shopcart
 
 Scenario: Delete an item in the shopcart
    When I visit the "Home Page"
+   And I set the "Name" to "Jon"
    And I press the "Search" button
    Then I should see the message "Success"
    When I copy the "ID" field
    And I paste the "Shopcart ID" field
    And I press the "Retrieve Item" button
    Then I should see the message "Success"
+   And I should see "underwear" in the item results
    When I press the "Delete Item" button
-   And I paste the "Shopcart ID" field
+#   And I paste the "Shopcart ID" field
    And I press the "Retrieve Item" button
-   Then I should not see "shirt" in the item results
-   And I should see "pants" in the item results
+   Then I should not see "underwear" in the item results
 
-Scenario: Increase an item in a Shopcart
+Scenario: Increase and decrease an item in a Shopcart
    When I visit the "Home Page"
    And I set the "Name" to "Steven"
    And I press the "Search" button
@@ -206,16 +207,19 @@ Scenario: Increase an item in a Shopcart
    And I press the "Increase Quantity" button
    And I press the "Retrieve Item" button
    Then I should see "3" in the item results
-
-Scenario: Decrease an item in a Shopcart
-   When I visit the "Home Page"
-   And I set the "Name" to "Jon"
-   And I press the "Search" button
-   Then I should see the message "Success"
-   When I copy the "ID" field
-   And I paste the "Shopcart ID" field
-   And I press the "Retrieve Item" button
-   Then I should see "3" in the item results
    When I press the "Decrease Quantity" button
    And I press the "Retrieve Item" button
    Then I should see "2" in the item results
+
+# Scenario: Decrease an item in a Shopcart
+#    When I visit the "Home Page"
+#    And I set the "Name" to "Jon"
+#    And I press the "Search" button
+#    Then I should see the message "Success"
+#    When I copy the "ID" field
+#    And I paste the "Shopcart ID" field
+#    And I press the "Retrieve Item" button
+#    Then I should see "3" in the item results
+#    When I press the "Decrease Quantity" button
+#    And I press the "Retrieve Item" button
+#    Then I should see "2" in the item results
