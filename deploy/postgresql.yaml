@@ -65,13 +65,12 @@ metadata:
   labels:
     app: postgres
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: postgres
   ports:
     - port: 5432
-      targetPort: 5432
-      nodePort: 31032
+      targetPort: 5432     
 
 ---
 # This secret can also be created from the command line using environment variables
