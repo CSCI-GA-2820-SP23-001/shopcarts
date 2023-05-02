@@ -86,3 +86,25 @@ delete_items  DELETE   /shopcarts/<shopcart_id>/items/<item_id>
 ```
 
 The test cases have 95% test coverage and can be run with `nosetests`.
+
+
+## Deployment
+
+### First Time Deployment
+* Open Docker on your local machine
+* Open the code in Dev Container
+* In terminal, use `make login` to login to IBM Cloud, authenticate with the container registry, and pull down the cluster configuration
+* In terminal, use `make build` to build Docker images
+* Then, in terminal, type in these three commands to deploy postgres db and all others and make the service run
+  * `kubectl apply -n dev -f deploy/postgresql.yaml`
+  * `kubectl create -n dev -f deploy/deployment.yaml`
+  * `kubectl create -n dev -f deploy/service.yaml`
+
+### After Deployment
+* Open Docker on your local machine
+* Open the code in Dev Container
+* In terminal, use `make login` to login to IBM Cloud, authenticate with the container registry, and pull down the cluster configuration
+* In terminal, use `kubectl -n dev get all` to see everything running under `dev` namespace
+* In terminal, use `kubectl -n dev get service` to see services running under `dev` namespace
+* In terminal, use `ibmcloud ks workers --cluster nyu-devops --output json | jq -r '.[0].publicIP'` to see the public IP
+* Access the service through `WORKERNODE_PUBLIC_IP:31001`, replace the `WORKERNODE_PUBLIC_IP` with the public IP you got from the previous step
